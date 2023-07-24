@@ -29,12 +29,12 @@
 			double var3 = 3.14;
 			String var4 = "Hello";
 
-			out.println("<p>var1 : " + var1 + "</p>");
+			out.println("<p>var1 : " + var1 + "</p>"); //스크립트릿에서 출력시 태그는 ""안에서
 			out.println("<p>var2 : " + var2 + "</p>");
 		%>
 		
 		<h4>표현식(Expression)</h4>
-		<p>var3 : <%= var3 %></p> 
+		<p>var3 : <%= var3 %></p> <!-- 프로그래밍 영역의 var3 -->
 		<p>var4 : <%= var4 %></p>
 	</body>
 </html>
