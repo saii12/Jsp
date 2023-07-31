@@ -1,3 +1,6 @@
+<%@page import="javax.sql.DataSource"%>
+<%@page import="javax.naming.InitialContext"%>
+<%@page import="javax.naming.Context"%>
 <%@page import="vo.User1VO"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.PreparedStatement"%>
@@ -9,27 +12,35 @@
 	String uid = request.getParameter("uid"); //list.jsp 에서 수정 클릭할 때 전송데이터는 uid 
 	
 	// 데이터베이스 처리
-	String host = "jdbc:mysql://127.0.0.1:3306/userdb";
-	String user = "root";
-	String pass = "1234";
 	
 	User1VO vo = new User1VO();
 	
-	Class.forName("com.mysql.cj.jdbc.Driver");
-	Connection conn = DriverManager.getConnection(host, user, pass);
-	PreparedStatement psmt = conn.prepareStatement("SELECT * FROM `user2` WHERE `uid`=?");
-	ResultSet rs = psmt.executeQuery();
-	
-	if(rs.next()){
-		 vo.setUid(rs.getString(1));
-		 vo.setName(rs.getString(2));
-		 vo.setHp(rs.getString(3));
-		 vo.setAge(rs.getInt(4));
-	}
+	try{
+		Context initCtx = new InitialContext();
+		Context ctx = (Context) initCtx.lookup("java:comp/env");
+		
+		DataSource ds = (DataSource) ctx.lookup("jdbc/userdb");
+		Connection conn = ds.getConnection();
+		
+		PreparedStatement psmt = conn.prepareStatement("SELECT * FROM `user2` WHERE `uid`=?");
+		psmt.setString(1, uid);
+		ResultSet rs = psmt.executeQuery();
+		
+		
+		if(rs.next()){
+			 vo.setUid(rs.getString(1));
+			 vo.setName(rs.getString(2));
+			 vo.setHp(rs.getString(3));
+			 vo.setAge(rs.getInt(4));
+		}
 	
 	rs.close();
 	psmt.close();
 	conn.close();
+	
+	}catch(Exception e){
+		e.printStackTrace();
+	}
 	
 %>
 
