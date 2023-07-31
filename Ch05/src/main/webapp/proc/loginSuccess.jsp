@@ -4,7 +4,7 @@
 
 	if(sessid == null){
 		response.sendRedirect("./loginForm.jsp"); // 쿠키 유효기간 끝나서 sessid 없으면 다시 로그인화면
-		return; // 리턴은 왜???
+		return; // 리턴은 왜???w
 	}
 
 %>
