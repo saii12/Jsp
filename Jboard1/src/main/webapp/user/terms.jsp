@@ -1,3 +1,4 @@
+<%@page import="kr.co.jboard1.dao.UserDAO"%>
 <%@page import="kr.co.jboard1.vo.TermsVO"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
@@ -7,29 +8,9 @@
 <%@page import="javax.naming.Context"%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	TermsVO vo = new TermsVO(); // try문 안에써도 밑에 html 태그 안에서 참조 못하니까 try문 밖에서 선언해줘야함
+	TermsVO tv = UserDAO.getInstance().selectTerms(); 
 
-	try{
-		Context initCtx = new InitialContext();
-		Context ctx = (Context) initCtx.lookup("java:comp/env");
-		DataSource ds = (DataSource) ctx.lookup("jdbc/Jboard");
-		
-		Connection conn = ds.getConnection();
-		Statement stmt = conn.createStatement(); //preparedStatement는 안되는감?? preparedStatement는 파라미터 있을 때 쓴다???
-		ResultSet rs = stmt.executeQuery("SELECT * FROM `Terms`");
-		
-		if(rs.next()){
-			vo.setTerms(rs.getString(1));
-			vo.setPrivacy(rs.getString(2));
-		}
-		
-		rs.close();
-		stmt.close();
-		conn.close();
-		
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+	
 
 %>
 <!DOCTYPE html>
@@ -78,7 +59,7 @@
                     <caption>사이트 이용약관</caption>
                     <tr>
                         <td>
-                            <textarea readonly><%= vo.getTerms() %></textarea>
+                            <textarea readonly><%= tv.getTerms() %></textarea>
                             <p>
                                 <label><input type="checkbox" name="chk1"/>동의합니다.</label>
                             </p>
@@ -89,7 +70,7 @@
                     <caption>개인정보 취급방침</caption>
                     <tr>
                         <td>
-                            <textarea readonly><%= vo.getPrivacy() %></textarea>
+                            <textarea readonly><%= tv.getPrivacy() %></textarea>
                             <p>
                                 <label><input type="checkbox" name="chk2"/>동의합니다.</label>
                             </p>

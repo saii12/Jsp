@@ -1,3 +1,4 @@
+<%@page import="kr.co.jboard1.dao.UserDAO"%>
 <%@page import="com.google.gson.JsonObject"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="com.mysql.cj.protocol.Resultset"%>
@@ -11,32 +12,15 @@
 	request.setCharacterEncoding("UTF-8");
 	String nick = request.getParameter("nick");
 	
-	int result = 0;
+	// DB 조회
+	int result = UserDAO.getInstance().selectCountNick(nick);
 	
-	try{
-	Context initctx = new InitialContext();
-	Context ctx = (Context) initctx.lookup("java:comp/env");
-	DataSource ds = (DataSource) ctx.lookup("jdbc/Jboard");
-	Connection conn = ds.getConnection();
 	
-	PreparedStatement psmt = conn.prepareStatement("SELECT COUNT(*) FROM `user` WHERE `nick`=?");
-	psmt.setString(1, nick);
-	ResultSet rs = psmt.executeQuery();
-	
-	if(rs.next()){
-		result = rs.getInt(1);
-	}
-	
-	rs.close();
-	psmt.close();
-	conn.close();
-	
-	}catch(Exception e){
-		e.printStackTrace();
-	}
-	
+	// Json 생성
 	JsonObject json = new JsonObject();
 	json.addProperty("result", result);
+	
+	// Json 출력
 	String jsonData = json.toString();
 	out.print(jsonData);
 	
