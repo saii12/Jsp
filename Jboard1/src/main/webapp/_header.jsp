@@ -1,7 +1,7 @@
-<%@page import="kr.co.jboard1.vo.UserVO"%>
+<%@page import="kr.co.jboard1.dto.UserDTO"%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	UserVO sessUser = (UserVO) session.getAttribute("sessUser"); // session의 sessUser 속성값은 UserVO객체
+UserDTO sessUser = (UserDTO) session.getAttribute("sessUser"); // session의 sessUser 속성값은 UserVO객체
 	if(sessUser == null){
 		response.sendRedirect("/Jboard1/user/login.jsp?success=101");
 		return;

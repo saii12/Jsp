@@ -31,5 +31,15 @@ public class SQL {
 												+ "`regip`=?, "
 												+ "`rdate`=NOW()";
 
-	public final static String SELECT_ARTICLES = "SELECT * FROM `Article`";
+	public final static String SELECT_ARTICLES = "SELECT "
+												+ "a.*, "
+												+ "b.`nick` "
+												+ "FROM `Article` AS a "
+												+ "JOIN `User` AS b ON a.writer = b.uid "
+												+ "ORDER BY `no` DESC "
+												+ "LIMIT ?, 10"; // 1페이지는 0 2페이지는 10 3페이지는 20
+	
+	public final static String SELECT_COUNT_TOTAL = "SELECT COUNT(*) FROM `Article`";
+												
+												
 }

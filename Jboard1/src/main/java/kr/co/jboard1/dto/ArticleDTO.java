@@ -1,6 +1,6 @@
-package kr.co.jboard1.vo;
+package kr.co.jboard1.dto;
 
-public class ArticleVO { // ArticleVO 는 article 테이블의 하나의 객체(article의 칼럼 모두 속성으로)	
+public class ArticleDTO { // ArticleVO 는 article 테이블의 하나의 객체(article의 칼럼 모두 속성으로)	
 
 	private int no; 
 	private int parent;
@@ -13,6 +13,17 @@ public class ArticleVO { // ArticleVO 는 article 테이블의 하나의 객체(
 	private String writer;
 	private String regip;
 	private String rdate; // Date 타입도 String 으로 처리하는 게 더 편하다
+	
+	// 추가필드
+	private String nick;
+	
+	public String getNick() {
+		return nick;
+	}
+	public void setNick(String nick) {
+		this.nick = nick;
+	}
+	
 	
 	public int getNo() {
 		return no;

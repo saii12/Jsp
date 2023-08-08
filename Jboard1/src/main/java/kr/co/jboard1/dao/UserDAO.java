@@ -11,8 +11,8 @@ import javax.sql.DataSource;
 
 import kr.co.jboard1.db.DBHelper;
 import kr.co.jboard1.db.SQL;
-import kr.co.jboard1.vo.TermsVO;
-import kr.co.jboard1.vo.UserVO;
+import kr.co.jboard1.dto.TermsDTO;
+import kr.co.jboard1.dto.UserDTO;
 
 public class UserDAO extends DBHelper { // UserDAO 클래스를 만드는 이유는 여러 메서드를 실행하기 위한 틀
 
@@ -22,7 +22,7 @@ public class UserDAO extends DBHelper { // UserDAO 클래스를 만드는 이유
 	}
 	private UserDAO() {}
 	
-	public void insertUser(UserVO vo) {
+	public void insertUser(UserDTO dto) {
 		
 		try{
 			conn = getConnection();
@@ -31,16 +31,16 @@ public class UserDAO extends DBHelper { // UserDAO 클래스를 만드는 이유
 			psmt = conn.prepareStatement(SQL.INSERT_USER);
 			
 			
-			psmt.setString(1, vo.getUid()); // 객체의 속성을 이용해서 파라미터 지정
-			psmt.setString(2, vo.getPass());
-			psmt.setString(3, vo.getName());
-			psmt.setString(4, vo.getNick());
-			psmt.setString(5, vo.getEmail());
-			psmt.setString(6, vo.getHp());
-			psmt.setString(7, vo.getZip());
-			psmt.setString(8, vo.getAddr1());
-			psmt.setString(9, vo.getAddr2());
-			psmt.setString(10, vo.getRegip());
+			psmt.setString(1, dto.getUid()); // 객체의 속성을 이용해서 파라미터 지정
+			psmt.setString(2, dto.getPass());
+			psmt.setString(3, dto.getName());
+			psmt.setString(4, dto.getNick());
+			psmt.setString(5, dto.getEmail());
+			psmt.setString(6, dto.getHp());
+			psmt.setString(7, dto.getZip());
+			psmt.setString(8, dto.getAddr1());
+			psmt.setString(9, dto.getAddr2());
+			psmt.setString(10, dto.getRegip());
 			
 			
 			psmt.executeUpdate();
@@ -52,9 +52,9 @@ public class UserDAO extends DBHelper { // UserDAO 클래스를 만드는 이유
 		}
 	}
 	
-	public UserVO selectUser(String uid, String pass) {
+	public UserDTO selectUser(String uid, String pass) {
 		
-		UserVO user = null;
+		UserDTO user = null;
 		try{
 			
 			conn = getConnection();
@@ -64,7 +64,7 @@ public class UserDAO extends DBHelper { // UserDAO 클래스를 만드는 이유
 			rs = psmt.executeQuery(); // rs 객체는 하나의 레이블이고, 13개의 칼럼을 가지고 있음
 			
 			if(rs.next()){
-				user = new UserVO(); // 객체생성
+				user = new UserDTO(); // 객체생성
 				user.setUid(rs.getString(1));
 				user.setPass(rs.getString(2));
 				user.setName(rs.getString(3));
@@ -160,8 +160,8 @@ public class UserDAO extends DBHelper { // UserDAO 클래스를 만드는 이유
 		return result;
 	}
 	
-	public TermsVO selectTerms() {
-		TermsVO vo = new TermsVO();
+	public TermsDTO selectTerms() {
+		TermsDTO dto = new TermsDTO();
 		
 		try{
 			conn = getConnection();
@@ -169,22 +169,16 @@ public class UserDAO extends DBHelper { // UserDAO 클래스를 만드는 이유
 			rs = stmt.executeQuery(SQL.SELECT_TERMS);
 			
 			if(rs.next()){
-				vo.setTerms(rs.getString(1));
-				vo.setPrivacy(rs.getString(2));
+				dto.setTerms(rs.getString(1));
+				dto.setPrivacy(rs.getString(2));
 			}
 			close();
 			
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-		return vo;
+		return dto;
 	}
-	
-	
-	
-	
-	
-	
 	
 	public void selectUsers() {}
 	public void updateUser() {}

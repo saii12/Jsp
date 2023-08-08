@@ -1,11 +1,12 @@
-<%@page import="kr.co.jboard1.vo.UserVO"%>
+<%@page import="kr.co.jboard1.dto.UserDTO"%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
-<% // Server 영역(백엔드)
+<%
+// Server 영역(백엔드)
 	request.setCharacterEncoding("UTF-8");
 	String success = request.getParameter("success");
 	
 	// 현재 사용자 로그인 여부 확인해서 리스트 이동
-	UserVO sessUser = (UserVO) session.getAttribute("sessUser");
+	UserDTO sessUser = (UserDTO) session.getAttribute("sessUser");
 	
 	if(sessUser != null){
 		// forward는 시스템 내에서 자원 이름이기 때문에 서버경로 대신 상대경로 지정
