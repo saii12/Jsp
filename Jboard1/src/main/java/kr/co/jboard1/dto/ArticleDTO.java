@@ -37,6 +37,9 @@ public class ArticleDTO { // ArticleVO 는 article 테이블의 하나의 객체
 	public void setParent(int parent) {
 		this.parent = parent;
 	}
+	public void setParent(String parent) { // 이름이 같은 두 메서드 : 오버로드
+		this.parent = Integer.parseInt(parent);
+	}
 	public int getComment() {
 		return comment;
 	}
