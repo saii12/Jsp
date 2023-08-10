@@ -31,6 +31,9 @@ public class ArticleDTO { // ArticleVO 는 article 테이블의 하나의 객체
 	public void setNo(int no) {
 		this.no = no;
 	}
+	public void setNo(String no) {
+		this.no = Integer.parseInt(no); // 문자열 no로 받을 수 있는 메서드 추가해주기
+	}
 	public int getParent() {
 		return parent;
 	}
