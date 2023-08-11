@@ -18,6 +18,11 @@
 <script>
 
 	$(function(){
+		
+		// 댓글 내용 전역변수
+		let comment = '';
+		
+		
 		// 댓글 수정
 		$('.mod').click(function(e){
 			e.preventDefault();
@@ -25,26 +30,41 @@
 			const txt = $(this).text();
 			
 			if(txt == '수정'){
+				// 수정모드 전환
 				$(this).parent().prev().addClass('modi'); // jQuery해야함, javascript는 시간낭비
 				$(this).parent().prev().attr('readonly', false);
 				$(this).parent().prev().focus();
 				$(this).text('수정완료');
 				$(this).prev().show();
 			}else{
-				// 수정완료 클릭
-				// 수정데이터 전송
-				$(this).closest('form').submit();
+				
+				// '수정완료' 클릭
+				if(confirm('정말 수정하시겠습니까?')){
+					// 수정데이터 전송
+					$(this).closest('form').submit();	
+				}
+				
 				
 				// 수정모드 해제
 				$(this).parent().prev().removeClass('modi');
 				$(this).parent().prev().attr('readonly', true);
 				$(this).text('수정');
 				$(this).prev().hide();
-				
-			
 			}
 		});
 		
+		// 댓글 수정취소
+		/*
+		$('.can').click(function(e){
+			e.preventDefault();
+			
+			// 수정모드 해제
+			$(this).parent().prev().removeClass('modi'); // this: 내가 클릭한 취소 링크, parent(): 부모태그(div), prev():div 앞에태그(textarea)
+			$(this).parent().prev().attr('readonly', true);
+			$(this).hide();
+			$(this).next().text('수정');
+		});
+		*/
 		
 		// 댓글 삭제
 		$('.del').click(function(){
@@ -128,6 +148,8 @@
                     <% for(ArticleDTO comment : comments){ %>
                     <article class="comment">
                     	<form action="/Jboard1/proc/commentUpdate.jsp" method="post"> <!-- a태그는 get 방식, 대부분의 태그는 get방식. 딱 form만 method방식을 선택할 수 있다. 파라미터는 get방식에서 가능 -->
+                    		<input type="hidden" name="no" value="<%= comment.getNo() %>">
+                    		<input type="hidden" name="parent" value="<%= comment.getParent() %>">
 	                        <span>
 	                            <span><%= comment.getNick() %></span>
 	                            <span><%= comment.getRdate() %></span>
@@ -137,7 +159,7 @@
 	                        <% if(sessUser.getUid().equals(comment.getWriter())){ %> <!-- 문자열비교 equals() / 현재 로그인한 아이디와 댓글 쓰는 작성자(아이디)가 같을 때 삭제,수정 가능하도록 -->
 	                        <div>
 	                            <a href="/Jboard1/proc/commentDelete.jsp?no=<%= comment.getNo() %>&parent=<%= comment.getParent() %>" class="del">삭제</a> <!-- id는 for문으로 중복되서 쓸수 없다, class만 가능 -->
-	                            <a href="#" class="can">취소</a>
+	                            <a href="/Jboard1/view.jsp?no=<%= no %>" class="can">취소</a>
 	                            <a href="#" class="mod" >수정</a>
 	                        </div>
 	                        <% } %>
