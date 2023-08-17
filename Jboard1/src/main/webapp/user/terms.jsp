@@ -29,7 +29,7 @@ TermsDTO tv = UserDAO.getInstance().selectTerms();
     		btnNext.addEventListener('click', function(e){
     			e.preventDefault();
     			
-    			alert('click!');
+    			//alert('click!');
     			
     			if(!chk1.checked){ //checked가 참이 아닐 때
     				alert('이용약관에 동의하셔야 합니다.');
