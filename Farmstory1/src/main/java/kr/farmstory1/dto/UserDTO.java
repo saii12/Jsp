@@ -1,10 +1,10 @@
-package kr.farmsotry1.dto;
+package kr.farmstory1.dto;
 
 public class UserDTO {
 	
 	private String uid;
-	private String name;
 	private String pass;
+	private String name;
 	private String nick;
 	private String email;
 	private String hp;
@@ -22,17 +22,17 @@ public class UserDTO {
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public String getPass() {
 		return pass;
 	}
 	public void setPass(String pass) {
 		this.pass = pass;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getNick() {
 		return nick;
@@ -93,5 +93,8 @@ public class UserDTO {
 	}
 	public void setLeaveDate(String leaveDate) {
 		this.leaveDate = leaveDate;
-	}
+	}	
+	
+	
+	
 }

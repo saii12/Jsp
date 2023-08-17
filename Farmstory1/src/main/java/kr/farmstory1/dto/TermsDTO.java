@@ -1,4 +1,4 @@
-package kr.farmsotry1.dto;
+package kr.farmstory1.dto;
 
 public class TermsDTO {
 	private String terms;
@@ -10,12 +10,11 @@ public class TermsDTO {
 	public void setTerms(String terms) {
 		this.terms = terms;
 	}
+	
 	public String getPrivacy() {
 		return privacy;
 	}
 	public void setPrivacy(String privacy) {
 		this.privacy = privacy;
 	}
-
-
 }
