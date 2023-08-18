@@ -122,6 +122,31 @@ public class ArticleDAO extends DBHelper {
 	}
 
 	// 추가 
+	public List<ArticleDTO> selectLatests(String cate, int size) {
+		List<ArticleDTO> latests = new ArrayList<>();
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.SELECT_LATESTS);
+			psmt.setString(1, cate);
+			psmt.setInt(2, size);
+			
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				ArticleDTO dto = new ArticleDTO();
+				dto.setNo(rs.getInt("no")); // 칼럼번호 와도 되고, 칼럼명 와도 된다.
+				dto.setTitle(rs.getString("title"));
+				dto.setRdate(rs.getString("rdate"));
+				latests.add(dto);
+			}
+			close();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return latests;
+	}
+	
 	public int selectCountTotal(String cate) {
 		
 		int total = 0;
@@ -194,7 +219,7 @@ public class ArticleDAO extends DBHelper {
 		}
 	}
 	
-	public void updateAticleForCommentPlus(String no) {
+	public void updateArticleForCommentPlus(String no) {
 		try {
 			conn = getConnection();
 			psmt = conn.prepareStatement(SQL.UPDATE_ARTICLE_FOR_COMMENT_PLUS);
@@ -206,7 +231,7 @@ public class ArticleDAO extends DBHelper {
 		}
 	}
 	
-	public void updateAticleForCommentMinus(String no) {
+	public void updateArticleForCommentMinus(String no) {
 		try {
 			conn = getConnection();
 			psmt = conn.prepareStatement(SQL.UPDATE_ARTICLE_FOR_COMMENT_MINUS);

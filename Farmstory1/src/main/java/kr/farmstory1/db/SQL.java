@@ -38,6 +38,10 @@ public class SQL {
 												+ "`regip`=?,"
 												+ "`rdate`=NOW()";
 	
+	public final static String SELECT_LATESTS = "SELECT `no`, `title`, `rdate` FROM `Article` "
+												+ "WHERE `parent`=0 AND `cate`=? " // parent 0은 댓글 아닌것들, 즉 글을 가리킴
+												+ "Order BY  `no` DESC LIMIT ?";
+	
 	public final static String SELECT_ARTICLE = "SELECT * FROM `Article` WHERE `no`=?";
 	public final static String SELECT_ARTICLES = "SELECT "
 												+ "a.*, "
