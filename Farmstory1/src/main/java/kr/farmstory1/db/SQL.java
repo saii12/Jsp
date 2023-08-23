@@ -71,5 +71,35 @@ public class SQL {
 	public final static String DELETE_ARTICLE = "DELETE FROM `Article` WHERE `no`=? OR `parent`=?";
 	public final static String DELETE_COMMENT = "DELETE FROM `Article` WHERE `no`=?";
 	
+	// Product
+	public final static String INSERT_PRODUCT = "INSERT INTO `Product` SET "
+												+ "`type`=?,"
+												+ "`pName`=?,"
+												+ "`price`=?,"
+												+ "`delivery`=?,"
+												+ "`stock`=?,"
+												+ "`thumb1`=?,"
+												+ "`thumb2`=?,"
+												+ "`thumb3`=?,"
+												+ "`seller`=?,"
+												+ "`etc`=?,"
+												+ "`rdate`=NOW()";
 	
+	
+	public final static String SELECT_PRODUCT_ = "SELECT * FROM `Product` WHERE `pNo`=?";
+	public final static String SELECT_PRODUCTS_ALL = "SELECT * FROM `Product` WHERE `stock` > 0 LIMIT ?, 10";
+	public final static String SELECT_PRODUCTS_TYPE = "SELECT * FROM `Product` WHERE `stock` > 0 AND `type`=? LIMIT ?, 10";
+	public final static String SELECT_COUNT_PRODUCTS_ALL = "SELECT COUNT(*) FROM `Product` WHERE `stock` > 0";
+	public final static String SELECT_COUNT_PRODUCTS_TYPE = "SELECT COUNT(*) FROM `Product` WHERE `stock` > 0 AND `type`=?";
+	
+	// Order
+	public static final String INSERT_ORDER = "INSERT INTO `Order` SET "
+											+ "`orderProduct`=?,"
+											+ "`orderCount`=?,"
+											+ "`orderDelivery`=?,"
+											+ "`orderPrice`=?,"
+											+ "`orderTotal`=?,"
+											+ "`orderEtc`=?,"
+											+ "`orderUser`=?,"
+											+ "`orderDate`=NOW()";			
 }

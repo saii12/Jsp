@@ -1,37 +1,57 @@
+<%@page import="kr.farmstory1.dto.ProductDTO"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.farmstory1.dao.ProductDAO"%>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>팜스토리</title>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-    <link rel="stylesheet" href="./css/style.css">
-    <style></style>
-</head>
-
-<body>
-    <div id="container">
-        <header>
-            <a href="./index.html" class="logo"><img src="./images/admin_logo.jpg" alt="로고"/></a>
-            <p>
-                <a href="#">HOME |</a>
-                <a href="#">로그아웃 |</a>
-                <a href="#">고객센터</a>
-            </p>
-        </header>
+<%@ include file="./_header.jsp" %>
+<%
+	request.setCharacterEncoding("UTF-8");
+	String type = request.getParameter("type");	
+	String pg = request.getParameter("pg");
+	
+	// DAO 객체 생성
+	ProductDAO dao = new ProductDAO();
+	
+	// 페이지 관련 변수 선언
+	int start = 0;
+	int currentPage = 1;
+	int total = 0;
+	int lastPageNum = 0;
+	int pageGroupCurrent = 1;
+	int pageGroupStart = 1;
+	int pageGroupEnd = 0;
+	int pageStartNum = 0;
+	
+	// 현재 페이지 계산
+	if(pg != null){
+		currentPage = Integer.parseInt(pg);
+	}
+	
+	// Limit 시작값 계산
+	start = (currentPage - 1) * 10;
+	
+	// 전체 상품 갯수
+	total = dao.selectCountProductsTotal(type);
+		
+	// 페이지 번호 계산
+	if(total % 10 == 0){
+		lastPageNum = (total / 10);
+	}else{
+		lastPageNum = (total / 10) + 1;
+	}
+	
+	// 페이지 그룹 계산
+	pageGroupCurrent = (int) Math.ceil(currentPage / 10.0);
+	pageGroupStart = (pageGroupCurrent - 1) * 10 + 1;
+	pageGroupEnd = pageGroupCurrent * 10;
+	
+	if(pageGroupEnd > lastPageNum){
+		pageGroupEnd = lastPageNum;
+	}	
+	
+	List<ProductDTO> products = dao.selectProducts(start);
+%>
         <main>
-            <aside>
-                <h3>주요기능</h3>
-                <ul>
-                    <li class="on"><a href="#">상품관리</a></li>
-                    <li><a href="#">주문관리</a></li>
-                    <li><a href="#">회원관리</a></li>                    
-                </ul>
-            </aside>
+            <%@ include file="./_aside.jsp" %> 
             <section id="productList">
                 <nav>
                     <h3>상품목록</h3>
@@ -40,6 +60,7 @@
                 <article>
 
                     <table border="0">
+                    <% %>
                         <tr>
                             <th><input type="checkbox" name="all"/></th>
                             <th>사진</th>
@@ -50,21 +71,31 @@
                             <th>재고</th>
                             <th>등록일</th>
                         </tr>
+                        <% for(ProductDTO product : products){ %>
                         <tr>
                             <td><input type="checkbox" name=""/></td>
-                            <td><img src="./images/sample_item1.jpg" class="thumb" alt="샘플1"></td>
-                            <td>1011</td>
-                            <td>사과 500g</td>
-                            <td>과일</td>
-                            <td>4,000원</td>
-                            <td>100</td>
-                            <td>2023-01-01</td>
+                            <td><img src="/Farmstory1/thumb/<%= product.getThumb1() %>" class="thumb" alt="샘플1"></td>
+                            <td><%= product.getpNo() %></td>
+                            <td><%= product.getpName() %></td>
+                            <td>
+	                            <%
+	                            	switch(product.getType()){
+	                            	case 1: out.print("과일"); break;
+	                            	case 2: out.print("야채"); break;
+	                            	case 3: out.print("곡물"); break;
+	                            	}
+	                            %>
+                            </td>
+                            <td><strong><%= product.getPriceWithComma() %></strong>원</td>
+                            <td><%= product.getStock() %></td>
+                            <td><%= product.getRdate() %></td>
                         </tr>
+                        <% } %>
                     </table>
 
                     <p>
                         <a href="#" class="productDelete">선택삭제</a>
-                        <a href="./productRegister.html" class="productRegister">상품등록</a>
+                        <a href="./productRegister.jsp" class="productRegister">상품등록</a>
                     </p>
                     
                     <p class="paging">
@@ -82,12 +113,4 @@
                 
             </section>
         </main>
-        <footer>            
-            <p>                
-                Copyright(C)Farmstory All rights reserved. FARMSTORY ADMINISTRATOR Version 1.0.1
-            </p>
-        </footer>
-    </div>
-    
-</body>
-</html>
+<%@ include file="./_footer.jsp" %>
