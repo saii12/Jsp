@@ -99,6 +99,11 @@ public class SQL {
 											+ "`orderDelivery`=?,"
 											+ "`orderPrice`=?,"
 											+ "`orderTotal`=?,"
+											+ "`receiver`=?,"
+											+ "`hp`=?,"
+											+ "`zip`=?,"
+											+ "`addr1`=?,"
+											+ "`addr2`=?,"
 											+ "`orderEtc`=?,"
 											+ "`orderUser`=?,"
 											+ "`orderDate`=NOW()";			

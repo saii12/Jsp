@@ -19,8 +19,13 @@ public class OrderDAO extends DBHelper{
 			psmt.setInt(3, dto.getOrderDelivery());
 			psmt.setInt(4, dto.getOrderPrice());
 			psmt.setInt(5, dto.getOrderTotal());
-			psmt.setString(6, dto.getOrderEtc());
-			psmt.setString(7, dto.getOrderUser());
+			psmt.setString(6, dto.getReceiver());
+			psmt.setString(7, dto.getHp());
+			psmt.setString(8, dto.getZip());
+			psmt.setString(9, dto.getAddr1());
+			psmt.setString(10, dto.getAddr2());
+			psmt.setString(11, dto.getOrderEtc());
+			psmt.setString(12, dto.getOrderUser());
 			psmt.executeUpdate();
 			close();
 			
