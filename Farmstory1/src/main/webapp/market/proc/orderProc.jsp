@@ -20,6 +20,9 @@
 	//dto.setOrderEtc(orderProduct);
 	//dto.setOrderUser(buyer);
 	
+	
+	
+	
 	OrderDAO dao = new OrderDAO();
 	dao.insertOrder(dto);
 %>
