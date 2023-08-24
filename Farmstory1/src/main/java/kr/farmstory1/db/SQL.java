@@ -106,5 +106,18 @@ public class SQL {
 											+ "`addr2`=?,"
 											+ "`orderEtc`=?,"
 											+ "`orderUser`=?,"
-											+ "`orderDate`=NOW()";			
+											+ "`orderDate`=NOW()";	
+	
+	public static final String SELECT_ORDERS = "SELECT "
+											+ "a.*,"
+											+ "b.`pName`,"
+											+ "b.`thumb1` "
+											+ "FROM `Order` AS a "
+											+ "JOIN `Product` AS b "
+											+ "ON a.orderProduct = b.pNo "
+											+ "LIMIT ?, 10";
+	
+	public static final String SELECT_COUNT_ORDERS = "SELECT COUNT(*) FROM `Order`";
+	
+	public static final String DELETE_ORDERS = "DELETE FROM `Order` WHERE `orderNo`=?";
 }
