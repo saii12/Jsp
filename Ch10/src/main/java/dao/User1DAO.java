@@ -14,8 +14,8 @@ import dto.User1DTO;
 public class User1DAO {
 	
 	private final String HOST = "jdbc:mysql://13.125.234.76:3306/UserDB";
-	private final String USER = "user";
-	private final String PASS = "1234";
+	private final String USER = "";
+	private final String PASS = "";
 
 	public void insertUser1(User1DTO dto) {
 		
