@@ -34,7 +34,7 @@
 						<a href="/Ch11/delete.do?uid=${member.getUid()}">삭제</a> <!-- ?(파라미터)를 이용하는 건 전송데이터를 getparameter 할 게 없기 때문 ex) request.getParameter("uid") 하려면 name값 있어야지 -->
 					</td>
 				</tr>
-			</c:forEach>
+			</c:forEach> <!-- forEach 주의 -->
 		</table>
 	</body>
 </html>
