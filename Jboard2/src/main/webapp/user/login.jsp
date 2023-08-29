@@ -1,8 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="./_header.jsp" %>
+<script>
+	const success = ${success};
+	
+	if(success == 100){
+		alert('아이디, 비밀번호를 다시 확인하십시오');
+	}else if(success == 200){
+		alert('정상적으로 로그아웃 되었습니다.');
+	}
+</script>
         <main id="user">
             <section class="login">
-                <form action="../list.html">
+                <form action="/Jboard2/user/login.do" method="post">
                     <table border="0">
                         <tr>
                             <td><img src="/Jboard2/img/login_ico_id.png" alt="아이디"/></td> <!-- 절대 경로로 하는 이유가 뭘까?? -->

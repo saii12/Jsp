@@ -9,12 +9,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kr.co.jboard2.dto.UserDTO;
+import kr.co.jboard2.service.UserService;
+
 @WebServlet("/user/findIdResult.do")
 public class FindResultController extends HttpServlet{
 	private static final long serialVersionUID = 2608529282392685934L;
+	UserService service = UserService.getInstance();
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		String name = req.getParameter("name");
+		String email = req.getParameter("email");
+				
+		UserDTO user = service.selectUserByNameAndEmail(name, email);
+		req.setAttribute("user", user);
+		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/user/findIdResult.jsp");
 		dispatcher.forward(req, resp);
 		
