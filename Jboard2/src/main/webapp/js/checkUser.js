@@ -1,52 +1,57 @@
 /*
 
 */
-window.onload = function(){
-		
+$(function(){ //window.onload = function(){ window.onload가 myInfo.jsp에도 있어가지고 두개라서 $(function(){}) 으로 수정함
+
+		// 아이디 중복체크
 		const inputUid = document.getElementsByName('uid')[0]; // Elements라 배열
 		const uidResult = document.getElementsByClassName('uidResult')[0];
 		const btnCheckUid = document.getElementById('btnCheckUid'); //Id는 하나
 		
-		
-		btnCheckUid.onclick = function(){
+		if(btnCheckUid != null){
 			
-			const uid = inputUid.value;
-			
-			// 아이디 유효성 검사
-			if(!uid.match(reUid)){ //정규표현식의 reuid
-				uidResult.innerText = '유효한 아이디가 아닙니다.';
-				uidResult.style.color = 'red';
-				isUidOk = false;
-				return;	
-			}
-			
-			// 서버전송
-			const xhr = new XMLHttpRequest();
-			xhr.open('GET', '/Jboard2/user/checkUid.do?uid='+uid);
-			xhr.send();
-			
-			xhr.onreadystatechange = function(){
+			btnCheckUid.onclick = function(){
 				
-				if(xhr.readyState == XMLHttpRequest.DONE){
+				const uid = inputUid.value;
+				
+				// 아이디 유효성 검사
+				if(!uid.match(reUid)){ //정규표현식의 reuid
+					uidResult.innerText = '유효한 아이디가 아닙니다.';
+					uidResult.style.color = 'red';
+					isUidOk = false;
+					return;	
+				}
+				
+				// 서버전송
+				const xhr = new XMLHttpRequest();
+				xhr.open('GET', '/Jboard2/user/checkUid.do?uid='+uid);
+				xhr.send();
+				
+				xhr.onreadystatechange = function(){
 					
-					if(xhr.status == 200){
+					if(xhr.readyState == XMLHttpRequest.DONE){
 						
-						const data = JSON.parse(xhr.response);
-						
-						if(data.result > 0){
-							uidResult.innerText = '이미 사용중인 아이디입니다.';
-							uidResult.style.color = 'red';
-							isUidOk = false;
+						if(xhr.status == 200){
 							
-						}else{
-							uidResult.innerText = '사용 가능한 아이디입니다.';
-							uidResult.style.color = 'green';
-							isUidOk = true;
+							const data = JSON.parse(xhr.response);
+							
+							if(data.result > 0){
+								uidResult.innerText = '이미 사용중인 아이디입니다.';
+								uidResult.style.color = 'red';
+								isUidOk = false;
+								
+							}else{
+								uidResult.innerText = '사용 가능한 아이디입니다.';
+								uidResult.style.color = 'green';
+								isUidOk = true;
+							}
 						}
-					}
-				}// readyState end
-			}// onreadystatechange end
-		}// btnCheckUid onclick end
+					}// readyState end
+				}// onreadystatechange end
+			}// btnCheckUid onclick end 
+		}
+		
+		
 		
 		// 닉네임 중복체크
 		$('#btnCheckNick').click(function(){
@@ -103,5 +108,4 @@ window.onload = function(){
 				}
 			});
 		});
-		
-	}// onload end
+});

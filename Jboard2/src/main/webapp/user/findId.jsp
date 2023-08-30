@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="./_header.jsp" %>
+<script src="/Jboard2/js/validation.js"></script>
 <script src="/Jboard2/js/authEmail.js"></script>
 <script>
 	$(function(){
@@ -17,7 +18,8 @@
 </script>
 <main id="user">
     <section class="find findId">
-        <form id="formFindId" action="/Jboard2/user/findIdResult.do" method="GET">
+        <form id="formFindId" action="/Jboard2/user/findIdResult.do" method="POST"> <!-- get 전송은 주소에 name, email 등 붙어서 감 -->
+            <input type="hidden" name="type" value="FIND_ID"/>
             <table border="0">
                 <caption>아이디 찾기</caption>
                 <tr>
@@ -34,7 +36,7 @@
                         </div>
                         <div>
                             <input type="text" name="auth" disabled placeholder="인증번호 입력"/>
-                            <button type="button" class="btnConfirm">확인</button>
+                            <button type="button" id="btnEmailAuth" class="btnConfirm">확인</button>
                         </div>
                     </td>
                 </tr>                        
