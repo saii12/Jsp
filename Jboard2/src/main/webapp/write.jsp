@@ -3,7 +3,8 @@
         <main id="board">
             <section class="write">
 
-                <form action="#">
+                <form action="/Jboard2/write.do" method="post" enctype="multipart/form-data"> <!-- post전송!!! -->
+                    <input type="hidden" name="writer" value="${sessUser.uid}"/> <!-- value는 뭘로 줄거야?? 세션으로. -->
                     <table border="0">
                         <caption>글쓰기</caption>
                         <tr>
@@ -19,7 +20,7 @@
                         <tr>
                             <th>파일</th>
                             <td>
-                                <input type="file" name="file"/>
+                                <input type="file" name="file"/> <!-- 여러 파일 선택시는 어떻게?? multiple="multiple" -->
                             </td>
                         </tr>
                     </table>
