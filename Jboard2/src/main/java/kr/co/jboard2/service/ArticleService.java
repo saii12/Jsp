@@ -1,12 +1,17 @@
 package kr.co.jboard2.service;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +21,7 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import kr.co.jboard2.dao.ArticleDAO;
 import kr.co.jboard2.dto.ArticleDTO;
+import kr.co.jboard2.dto.FileDTO;
 
 public enum ArticleService {
 
@@ -30,25 +36,27 @@ public enum ArticleService {
 	public ArticleDTO selectArticle(String no) {
 		return dao.selectArticle(no);
 	}
-	public List<ArticleDTO> selectArticles(int start) {
-		return dao.selectArticles(start);
+	public List<ArticleDTO> selectArticles(int start, String search) {
+		return dao.selectArticles(start, search);
 	}
 	public void updateArticle(ArticleDTO dto) {
 		dao.updateArticle(dto);
 	}
-	public void deleteArticle() {}
+	public void deleteArticle(String no) {
+		dao.deleteArticle(no);
+	}
 	
 	// 추가	
-	public int selectCountTotal() {
-		return dao.selectCountTotal();
+	public int selectCountTotal(String search) {
+		return dao.selectCountTotal(search);
 	}
 	
 	public List<ArticleDTO> selectComments(String parent) {
 		return dao.selectComments(parent);
 	}
 	
-	public void insertComment(ArticleDTO dto) {
-		dao.insertComment(dto);
+	public int insertComment(ArticleDTO dto) {
+		return dao.insertComment(dto);
 	}
 	
 	public void updateArticleForCommentPlus(String no) {
@@ -63,8 +71,8 @@ public enum ArticleService {
 		dao.updateComment(no, content);
 	}
 	
-	public void deleteComment(String no) {
-		dao.deleteComment(no);
+	public int deleteComment(String no) {
+		return dao.deleteComment(no);
 	}
 	
 	
@@ -116,8 +124,35 @@ public enum ArticleService {
 	}
 	
 	// 파일 다운로드
-	public void downloadFile() {
+	public void downloadFile(HttpServletRequest req, HttpServletResponse resp, FileDTO dto) throws IOException { //IOException안에 여기 예외들 포함되나보네(이것만 있으면 됨)
+		// response 파일다운로드 헤더 수정
+		resp.setContentType("application/octet-stream"); // response는 서버에서 클라이언트로 전송하는 내장객체
+		resp.setHeader("Content-Disposition", "attachment; filename="+URLEncoder.encode(dto.getOfile(), "utf-8"));
+		resp.setHeader("Content-Transfer-Encoding", "binary");
+		resp.setHeader("Pragma", "no-cache");
+		resp.setHeader("Cache-Control", "private");
 		
+		// response 파일 스트림 작업
+		String path = getFilePath(req); // ArticleService에 메서드 존재
+		File file = new File(path+"/"+dto.getSfile());
+		
+		
+		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+		BufferedOutputStream bos = new BufferedOutputStream(resp.getOutputStream());		
+	
+		while(true){
+			
+			int data = bis.read();
+			if(data == -1){
+				break;
+			}
+			
+			bos.write(data);
+			
+		}
+		
+		bos.close();
+		bis.close();
 	}
 	
 	// 페이지 마지막 번호

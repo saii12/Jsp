@@ -45,4 +45,12 @@ public class FileDTO {
 	public void setRdate(String rdate) {
 		this.rdate = rdate;
 	}
+	
+	@Override // DTO의 속성을 출력하는 문자열
+	public String toString() {
+		return "FileDTO [fno=" + fno + ", ano=" + ano + ", ofile=" + ofile + ", sfile=" + sfile + ", download="
+				+ download + ", rdate=" + rdate + "]";
+	}
+	
+	
 }

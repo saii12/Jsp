@@ -16,12 +16,27 @@ public class ArticleDTO {
 	
 	// 추가필드
 	private String nick;
+	private FileDTO fileDto;
+	/*private int fno; FileDTO의 개별 속성을 위에 코드로 간략히 표현
+	private int ano;
+	private String ofile;
+	private String sfile;
+	private int download;
+	private String rdate;*/
+	
 	
 	public String getNick() {
 		return nick;
 	}
 	public void setNick(String nick) {
 		this.nick = nick;
+	}
+	
+	public FileDTO getFileDto() {
+		return fileDto;
+	}
+	public void setFileDto(FileDTO fileDto) {
+		this.fileDto = fileDto;
 	}
 	
 	

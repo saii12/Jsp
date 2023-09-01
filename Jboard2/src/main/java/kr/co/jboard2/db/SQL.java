@@ -69,7 +69,11 @@ public class SQL {
 												+ "`rdate`=NOW()";
 
 	public final static String SELECT_MAX_NO = "SELECT MAX(`no`) FROM `Article`"; //데이터베이스에서 no 숫자이지만 문자열로 받아도됨
-	public final static String SELECT_ARTICLE = "SELECT * FROM `Article` WHERE `no`=?"; //데이터베이스에서 no 숫자이지만 문자열로 받아도됨
+	public final static String SELECT_ARTICLE = "SELECT * FROM `Article` AS a " //데이터베이스에서 no 숫자이지만 문자열로 받아도됨
+												+ "LEFT JOIN `File` AS b "
+												+ "ON a.`no` = b.`ano` "
+												+ "WHERE `no`=?"; 
+	
 	public final static String SELECT_ARTICLES = "SELECT "
 												+ "a.*, "
 												+ "b.`nick` "
@@ -79,6 +83,15 @@ public class SQL {
 												+ "ORDER BY `no` DESC "
 												+ "LIMIT ?, 10"; // 1페이지는 0 2페이지는 10 3페이지는 20
 	
+	public final static String SELECT_ARTICLES_FOR_SEARCH = "SELECT "
+											+ "a.*, "
+											+ "b.`nick` "
+											+ "FROM `Article` AS a "
+											+ "JOIN `User` AS b ON a.writer = b.uid "
+											+ "WHERE `parent`=0 AND `title` LIKE ? " // 원글(댓글제외)만 찾을 수 있도록
+											+ "ORDER BY `no` DESC "
+											+ "LIMIT ?, 10";
+	
 	public final static String SELECT_COMMENTS =  "SELECT "
 												+ "a.*, "
 												+ "b.`nick` " 
@@ -87,6 +100,7 @@ public class SQL {
 												+ "WHERE `parent`=?"; // 총 12개 칼럼 나옴(Article테이블에 nick칼럼만 추가)
 												
 	public final static String SELECT_COUNT_TOTAL = "SELECT COUNT(*) FROM `Article` WHERE `parent`=0"; // 원글(댓글제외)만 찾을 수 있도록
+	public final static String SELECT_COUNT_TOTAL_FOR_SERACH = "SELECT COUNT(*) FROM `Article` WHERE `parent`=0 AND `title` LIKE ?"; 
 	
 	public final static String UPDATE_ARTICLE = "UPDATE `Article` SET `title`=?, `content`=? WHERE `no`=?";
 	public final static String UPDATE_ARTICLE_FOR_COMMENT_PLUS = "UPDATE `Article` SET `comment` = `comment` + 1 WHERE `no`=?";
@@ -102,7 +116,10 @@ public class SQL {
 											+ "`ofile`=?,"
 											+ "`sfile`=?,"
 											+ "`rdate`=NOW()";
-
+	
+	public final static String SELECT_FILE = "SELECT * FROM `File` WHERE `fno`=?";
+	
+	public final static String DELETE_FILE = "DELETE FROM `File` WHERE `ano`=?";
 	
 												
 												

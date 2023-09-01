@@ -4,8 +4,8 @@
 
         <main id="board">
             <section class="list">                
-                <form action="#">
-                    <input type="text" name="search" placeholder="제목 키워드, 글쓴이 검색">
+                <form action="/Jboard2/list.do" method="get">
+                    <input type="text" name="search" placeholder="제목 키워드 검색">
                     <input type="submit" value="검색">
                 </form>
                 

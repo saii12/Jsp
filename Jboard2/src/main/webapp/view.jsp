@@ -1,6 +1,96 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="./_header.jsp" %>
+<script>
+	$(function(){
+		
+		// 댓글 삭제(동적 생성 이벤트 구현) / 화면 안 깜빡이고 통신 사용(비용) 줄이는 것
+		$(document).on('click', '.remove', function(e){
+			e.preventDefault();
+			//alert('클릭!');
+			const no = $(this).data('no'); // 사용자 정의 속성 활용
+			const article = $(this).parent().parent(); // a태그의 부모 div, div의 부모인 article을 선택
+			console.log('no : ' + no)
+			
+			const jsonData = {
+				"kind": "REMOVE",
+				"no": no
+			}
+			
+			$.ajax({
+				url: '/Jboard2/comment.do',
+				type: 'GET',
+				data: jsonData,
+				dataType: 'json',
+				success: function(data){ // ajax 쏘고 success를 받는거다.
+					
+					if(data.result > 0){
+						alert('댓글이 삭제 되었습니다.');
+						
+						// 화면처리
+						//$(this) / ajax 핸들러에서 this선택자 사용 못함
+						article.remove();
+					}
+				}
+			});
+		});
+		
+		// 댓글 입력
+		$('#btnComment').click(function(e){
+			e.preventDefault();
+			
+			const parent = $('#formComment > input[name=parent]').val(); // ${} 이게 아니라 $() 이거다!! 주의하기
+			const content = $('#formComment > textarea[name=content]').val();
+			const writer = $('#formComment > input[name=writer]').val();
+			
+			const jsonData = {
+					"parent": parent,
+					"content": content,
+					"writer": writer
+			};
+			
+			console.log('jsonData : ' + JSON.stringify(jsonData));
+			
+			$.ajax({
+				url: '/Jboard2/comment.do',
+				type: 'post',
+				data: jsonData,
+				dataType: 'json',
+				success: function(data){
+					
+					console.log(data);
+					
+					if(data.result > 0){
+						alert('댓글이 등록되었습니다.');
+						
+						// 동적 화면 생성
+						const dt = new Date();
+						const year = dt.getFullYear().toString().substr(2, 4);
+						const month = dt.getMonth()+1;
+						const date = dt.getDate();
+						const now = year + "-" + month + "-" + date;
+						
+						const article = `<article>
+											<span class='nick'>\${nick}</span>		
+											<span class='date'>\${now}</span>		
+											<p class='content'>\${content}</p>
+											<div>
+												<a href='#' class='remove'>삭제</a>
+												<a href='#' class='modify'>수정</a>
+											</div>
+										</article>`;
+										
+						$('.commentList').append(article);
+										
+					}else{
+						alert('댓글 등록이 실패했습니다.');
+					}
+				}
+			});
+		});
+	});
+
+</script>
         <main id="board">
             <section class="view">
                 
@@ -10,10 +100,15 @@
                         <th>제목</th>
                         <td><input type="text" name="title" value="${article.title}" readonly/></td>
                     </tr>
-                    <tr>
-                        <th>파일</th>
-                        <td><a href="#">2020년 상반기 매출자료.xls</a>&nbsp;<span>7</span>회 다운로드</td>
-                    </tr>
+                    <c:if test="${article.file > 0}">
+	                    <tr>
+	                        <th>파일</th>
+	                    	<td>
+	                    		<a href="/Jboard2/fileDownload.do?fno=${article.fileDto.fno}">${article.fileDto.ofile}</a>&nbsp;
+	                        	<span>${article.fileDto.download}</span>회 다운로드
+	                        </td>
+	                    </tr>
+                    </c:if>
                     <tr>
                         <th>내용</th>
                         <td>
@@ -23,7 +118,7 @@
                 </table>
                 
                 <div>
-                    <a href="#" class="btn btnRemove">삭제</a>
+                    <a href="/Jboard2/delete.do?no=${article.no}" class="btn btnRemove">삭제</a>
                     <a href="/Jboard2/modify.do?no=${article.no}" class="btn btnModify">수정</a>
                     <a href="./list.do" class="btn btnList">목록</a> <!-- 상대경로도 써보고, 절대경로도 써보고 -->
                 </div>
@@ -37,26 +132,26 @@
 	                        <span class="date">${comment.rdate}</span>
 	                        <p class="content">${comment.content}</p>                        
 	                        <div>
-	                            <a href="#" class="remove">삭제</a>
+	                            <a href="#" class="remove" data-no="${comment.no}">삭제</a> <!-- data-??? : 사용자정의 속성 / a태그는 value 속성 없다! -->
 	                            <a href="#" class="modify">수정</a>
 	                        </div>
 	                    </article>
                     </c:forEach>
-
-                    <p class="empty">등록된 댓글이 없습니다.</p>
-
+					<c:if test="${comments.size() == 0}">
+                    	<p class="empty">등록된 댓글이 없습니다.</p>
+					</c:if>	
                 </section>
 
                 <!-- 댓글쓰기 -->
                 <section class="commentForm">
                     <h3>댓글쓰기</h3>
-                    <form action="/Jboard2/comment.do" method="post"> <!-- method 써줘야지! -->
-                    <input type="hidden" name="parent" value="${no}"/> <!-- 뭐가 생략된거지??? -->
-                    <input type="hidden" name="writer" value="${sessUser.uid}"/>
-                        <textarea name="content">댓글내용 입력</textarea>
+                    <form id="formComment" action="#" method="post"> <!-- method 써줘야지! -->
+                    	<input type="hidden" name="parent" value="${no}"/> <!-- 뭐가 생략된거지??? -->
+                    	<input type="hidden" name="writer" value="${sessUser.uid}"/>
+                        <textarea name="content"></textarea>
                         <div>
                             <a href="#" class="btn btnCancel">취소</a>
-                            <input type="submit" value="작성완료" class="btn btnComplete"/>
+                            <input type="submit" id="btnComment" value="작성완료" class="btn btnComplete"/>
                         </div>
                     </form>
                 </section>

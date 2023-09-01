@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import kr.co.jboard2.db.DBHelper;
 import kr.co.jboard2.db.SQL;
 import kr.co.jboard2.dto.ArticleDTO;
+import kr.co.jboard2.dto.FileDTO;
 
 public class ArticleDAO extends DBHelper {
 	
@@ -46,7 +47,7 @@ public class ArticleDAO extends DBHelper {
 	
 	public ArticleDTO selectArticle(String no) { //no를 int가 아닌 String 타입으로 하는 이유는, 데이터 수신할때 String no = req.getParameter로 받아서 매개변수 no가 String이기 때문
 		
-		ArticleDTO dto = new ArticleDTO();
+		ArticleDTO article = new ArticleDTO();
 		
 		try {
 			conn = getConnection();
@@ -56,33 +57,49 @@ public class ArticleDAO extends DBHelper {
 			
 			if(rs.next()) {
 				
-				dto.setNo(rs.getInt(1));
-				dto.setParent(rs.getInt(2));
-				dto.setComment(rs.getInt(3));
-				dto.setCate(rs.getString(4));
-				dto.setTitle(rs.getString(5));
-				dto.setContent(rs.getString(6));
-				dto.setFile(rs.getInt(7));
-				dto.setHit(rs.getInt(8));
-				dto.setWriter(rs.getString(9));
-				dto.setRegip(rs.getString(10));
-				dto.setRdate(rs.getString(11));
+				article.setNo(rs.getInt(1));
+				article.setParent(rs.getInt(2));
+				article.setComment(rs.getInt(3));
+				article.setCate(rs.getString(4));
+				article.setTitle(rs.getString(5));
+				article.setContent(rs.getString(6));
+				article.setFile(rs.getInt(7));
+				article.setHit(rs.getInt(8));
+				article.setWriter(rs.getString(9));
+				article.setRegip(rs.getString(10));
+				article.setRdate(rs.getString(11));
+				//파일정보
+				FileDTO fileDto = new FileDTO();
+				fileDto.setFno(rs.getInt(12));
+				fileDto.setAno(rs.getInt(13));
+				fileDto.setOfile(rs.getString(14));
+				fileDto.setSfile(rs.getString(15));
+				fileDto.setDownload(rs.getInt(16));
+				fileDto.setRdate(rs.getString(17));
+				article.setFileDto(fileDto);
 			}
 		}catch (Exception e) {
 			logger.error("selectArticle : " + e.getMessage());
 		}
 		
-		return dto;
+		return article;
 	}
 	
-	public List<ArticleDTO> selectArticles(int start) {
+	public List<ArticleDTO> selectArticles(int start, String search) {
 		
 		List<ArticleDTO> articles = new ArrayList<ArticleDTO>();
 		
 		try {
 			conn = getConnection();
-			psmt = conn.prepareStatement(SQL.SELECT_ARTICLES);
-			psmt.setInt(1, start);
+			if(search == null) {
+				psmt = conn.prepareStatement(SQL.SELECT_ARTICLES);
+				psmt.setInt(1, start);
+			}else {
+				psmt = conn.prepareStatement(SQL.SELECT_ARTICLES_FOR_SEARCH);
+				psmt.setString(1, "%"+search+"%");
+				psmt.setInt(2, start);
+			}
+			
 			rs = psmt.executeQuery();
 			
 			while(rs.next()) {
@@ -123,21 +140,39 @@ public class ArticleDAO extends DBHelper {
 		}
 	}
 	
-	public void deleteArticle() {}
+	public void deleteArticle(String no) {
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.DELETE_ARTICLE);
+			psmt.setString(1, no);
+			psmt.setString(2, no); //parent가 글 번호인 댓글도 같이 삭제
+			psmt.executeUpdate();
+			close();
+		}catch (Exception e) {
+			logger.error("deleteArticle() : " + e.getMessage());
+		}
+	}
 	
 	// 추가
-	public int selectCountTotal() {
+	public int selectCountTotal(String search) {
 		
 		int total = 0;
 		
 		try {
 			conn = getConnection();
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(SQL.SELECT_COUNT_TOTAL);
+			if(search == null) {
+				psmt = conn.prepareStatement(SQL.SELECT_COUNT_TOTAL);
+			}else {
+				psmt = conn.prepareStatement(SQL.SELECT_COUNT_TOTAL_FOR_SERACH);
+				psmt.setString(1, "%"+search+"%");
+			}
+			
+			rs = psmt.executeQuery();
 			
 			if(rs.next()) {
 				total = rs.getInt(1);
 			}
+			close();
 		}catch (Exception e) {
 			logger.error("selectCountTotal error : " + e.getMessage());
 		}
@@ -181,7 +216,8 @@ public List<ArticleDTO> selectComments(String parent) {
 		return comments;
 	}
 	
-	public void insertComment(ArticleDTO dto) {
+	public int insertComment(ArticleDTO dto) {
+		int result = 0;
 		
 		try {
 			conn = getConnection();
@@ -190,11 +226,12 @@ public List<ArticleDTO> selectComments(String parent) {
 			psmt.setString(2, dto.getContent());
 			psmt.setString(3, dto.getWriter());
 			psmt.setString(4, dto.getRegip());
-			psmt.executeUpdate();
+			result = psmt.executeUpdate();
 			close();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		return result;
 	}
 	
 	public void updateArticleForCommentPlus(String no) {
@@ -234,16 +271,19 @@ public List<ArticleDTO> selectComments(String parent) {
 		}
 	}
 	
-	public void deleteComment(String no) {
+	public int deleteComment(String no) {
+		int result = 0;
+		
 		try {
 			conn = getConnection();
 			psmt = conn.prepareStatement(SQL.DELETE_COMMENT);
 			psmt.setString(1, no);
-			psmt.executeUpdate();
+			result = psmt.executeUpdate();
 			close();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		return result;
 	}
 	
 }
