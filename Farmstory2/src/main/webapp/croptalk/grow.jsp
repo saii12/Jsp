@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html> <!-- 틀 달라서 haeder, footer 모듈화 작업 안한다 -->
+<!DOCTYPE html> <!-- 틀 달라서 header, footer 모듈화 작업 안한다 -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">

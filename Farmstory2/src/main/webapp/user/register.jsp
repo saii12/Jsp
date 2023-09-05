@@ -7,7 +7,7 @@
 <script src="/Farmstory2/js/authEmail.js"></script>
 <div id="user">
 	<section class="register">
-        <form id="formUser" action="/user/register.do" method="post">
+        <form id="formUser" action="/Farmstory2/user/register.do" method="post"> <!-- /user/register.do 이따구로 주소 쓰면 안된다고(이건 서블릿에서) -->
             <table border="1">
                 <caption>사이트 이용정보 입력</caption>
                 <tr>

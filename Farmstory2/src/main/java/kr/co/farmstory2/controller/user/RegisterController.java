@@ -56,6 +56,6 @@ public class RegisterController extends HttpServlet{
 		
 		service.insertUser(dto);
 		
-		resp.sendRedirect("/user/login.do?success=200");
+		resp.sendRedirect("/Farmstory2/user/login.do"); // 여기는 주소 /user/login.do 이따구로 하면 안되고 절대경로 제대로 써줘야함
 	}
 }

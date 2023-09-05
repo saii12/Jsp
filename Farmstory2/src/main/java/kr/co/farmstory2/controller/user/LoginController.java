@@ -54,7 +54,7 @@ public class LoginController extends HttpServlet{
 			session.setAttribute("sessUser", user);
 			
 			// 리다이렉트
-			resp.sendRedirect("/board/list.do");
+			resp.sendRedirect("/Farmstory2"); // 리스트가 아니라 홈페이지로 다시 간다
 		}else {
 			resp.sendRedirect("/user/login.do?success=100");
 		}

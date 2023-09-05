@@ -90,10 +90,10 @@ $(function(){
 		xhr.onreadystatechange = function(){    				
 			if(xhr.readyState == XMLHttpRequest.DONE){						
 				if(xhr.status == 200){
-					const data = JSON.parse(xhr.response);
+					const data = JSON.parse(xhr.response); //json 객체를 data로
 					console.log('data : ' + data);
 					
-					if(data.result >= 1){
+					if(data.result >= 1){ // data의 result 속성
 						resultEmail.innerText = '이미 사용중인 이메일 입니다.';
 						resultEmail.style.color = 'red';
 						isEmailOk = false;

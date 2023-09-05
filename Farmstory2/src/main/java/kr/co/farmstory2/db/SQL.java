@@ -27,6 +27,7 @@ public class SQL {
 												+ "`cate`=?, "
 												+ "`title`=?, "
 												+ "`content`=?,"
+												+ "`file`=?,"
 												+ "`writer`=?,"
 												+ "`regip`=?,"
 												+ "`rdate`=NOW()";
@@ -39,10 +40,16 @@ public class SQL {
 												+ "`rdate`=NOW()";
 	
 	public final static String SELECT_LATESTS = "SELECT `no`, `title`, `rdate` FROM `Article` "
-												+ "WHERE `parent`=0 AND `cate`=? " // parent 0은 댓글 아닌것들, 즉 글을 가리킴
-												+ "Order BY  `no` DESC LIMIT ?";
+												+ "WHERE `parent`=0 AND `cate`=? "
+												+ "Order BY `no` DESC LIMIT ?";
 	
-	public final static String SELECT_ARTICLE = "SELECT * FROM `Article` WHERE `no`=?";
+	public final static String SELECT_MAX_NO = "SELECT MAX(`no`) FROM `Article`";
+	
+	public final static String SELECT_ARTICLE = "SELECT * FROM `Article` AS a "
+												+ "LEFT JOIN `File` AS b "
+												+ "ON a.`no` = b.`ano` "
+												+ "WHERE `no`=?";
+	
 	public final static String SELECT_ARTICLES = "SELECT "
 												+ "a.*, "
 												+ "b.`nick` "
@@ -52,12 +59,22 @@ public class SQL {
 												+ "ORDER BY `no` DESC "
 												+ "LIMIT ?, 10";
 	
+	
 	public final static String SELECT_COMMENTS = "SELECT "
 												+ "a.*, "
 												+ "b.`nick` "
 												+ "FROM `Article` AS a "
 												+ "JOIN `User` AS b ON a.writer = b.uid "
 												+ "WHERE `parent`=?";
+	
+	public final static String SELECT_COMMENT_LATEST = "SELECT "
+														+ "a.*, "
+														+ "b.`nick` "
+														+ "FROM `Article` AS a "
+														+ "JOIN `User` AS b ON a.writer = b.uid "
+														+ "WHERE `parent`!=0 "
+														+ "ORDER BY `no` DESC LIMIT 1"; 
+	
 	
 	public final static String SELECT_COUNT_TOTAL = "SELECT COUNT(*) FROM `Article` WHERE `parent`=0 AND `cate`=?";
 	
@@ -70,6 +87,16 @@ public class SQL {
 
 	public final static String DELETE_ARTICLE = "DELETE FROM `Article` WHERE `no`=? OR `parent`=?";
 	public final static String DELETE_COMMENT = "DELETE FROM `Article` WHERE `no`=?";
+	
+	// File
+	public final static String INSERT_FILE = "INSERT INTO `File` SET "
+											+ "`ano`=?,"
+											+ "`ofile`=?,"
+											+ "`sfile`=?,"
+											+ "`rdate`=NOW()";
+	
+	public final static String SELECT_FILE = "SELECT * FROM `File` WHERE `fno`=?";
+	public final static String DELETE_FILE = "DELETE FROM `File` WHERE `ano`=?";
 	
 	// Product
 	public final static String INSERT_PRODUCT = "INSERT INTO `Product` SET "
@@ -86,7 +113,7 @@ public class SQL {
 												+ "`rdate`=NOW()";
 	
 	
-	public final static String SELECT_PRODUCT_ = "SELECT * FROM `Product` WHERE `pNo`=?";
+	public final static String SELECT_PRODUCT = "SELECT * FROM `Product` WHERE `pNo`=?";
 	public final static String SELECT_PRODUCTS_ALL = "SELECT * FROM `Product` WHERE `stock` > 0 LIMIT ?, 10";
 	public final static String SELECT_PRODUCTS_TYPE = "SELECT * FROM `Product` WHERE `stock` > 0 AND `type`=? LIMIT ?, 10";
 	public final static String SELECT_COUNT_PRODUCTS_ALL = "SELECT COUNT(*) FROM `Product` WHERE `stock` > 0";
@@ -106,18 +133,21 @@ public class SQL {
 											+ "`addr2`=?,"
 											+ "`orderEtc`=?,"
 											+ "`orderUser`=?,"
-											+ "`orderDate`=NOW()";	
+											+ "`orderDate`=NOW()";
 	
 	public static final String SELECT_ORDERS = "SELECT "
-											+ "a.*,"
-											+ "b.`pName`,"
-											+ "b.`thumb1` "
-											+ "FROM `Order` AS a "
-											+ "JOIN `Product` AS b "
-											+ "ON a.orderProduct = b.pNo "
-											+ "LIMIT ?, 10";
+												+ "a.*,"
+												+ "b.`pName`,"
+												+ "b.`thumb1` "
+												+ "FROM `Order` AS a "
+												+ "JOIN `Product` AS b "
+												+ "ON a.orderProduct = b.pNo "
+												+ "LIMIT ?, 10";
 	
 	public static final String SELECT_COUNT_ORDERS = "SELECT COUNT(*) FROM `Order`";
+	public static final String DELETE_ORDER = "DELETE FROM `Order` WHERE `orderNo`=?";
 	
-	public static final String DELETE_ORDERS = "DELETE FROM `Order` WHERE `orderNo`=?";
+	
+	
+	
 }

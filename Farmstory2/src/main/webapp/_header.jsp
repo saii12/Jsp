@@ -32,9 +32,16 @@
             <a href="/Farmstory2" class="logo"><img src="/Farmstory2/images/logo.png" alt="로고"/></a>
             <p>
                 <a href="/Farmstory2/index.do">HOME |</a>
-                <a href="/Farmstory2/user/login.do">로그인 |</a>
-                <a href="/Farmstory2/user/terms.do">회원가입 |</a>
-                <a href="/Farmstory2/admin">관리자 |</a>
+                <c:if test="${empty sessUser}">
+                	<a href="/Farmstory2/user/login.do">로그인 |</a>
+                	<a href="/Farmstory2/user/terms.do">회원가입 |</a>
+                </c:if>
+                <c:if test="${not empty sessUser}">
+                	<a href="/Farmstory2/user/logout.do">로그아웃 |</a>
+                		<c:if test="${sessUser.role ne 'USER'}">
+                			<a href="/Farmstory2/admin">관리자 |</a>
+                		</c:if>
+                </c:if>
                 <a href="/Farmstory2/board/list.do?group=Community&cate=qna">고객센터</a>
             </p>
             <img src="/Farmstory2/images/head_txt_img.png" alt="3만원 이상 무료배송"/>

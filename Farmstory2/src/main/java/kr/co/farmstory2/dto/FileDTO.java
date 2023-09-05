@@ -8,6 +8,24 @@ public class FileDTO {
 	private int download;
 	private String rdate;
 	
+	// 추가
+	private String ofile;
+	private String sfile;
+	
+	public String getOfile() {
+		return ofile;
+	}
+	public void setOfile(String ofile) {
+		this.ofile = ofile;
+	}
+	
+	public String getSfile() {
+		return sfile;
+	}
+	public void setSfile(String sfile) {
+		this.sfile = sfile;
+	}
+	
 	public int getFno() {
 		return fno;
 	}

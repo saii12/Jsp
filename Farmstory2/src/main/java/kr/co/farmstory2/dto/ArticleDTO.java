@@ -13,6 +13,26 @@ public class ArticleDTO {
 	private String regip;
 	private String rdate;
 	
+	
+	
+	// 추가 
+	private String nick;
+	private FileDTO fileDtO;
+	
+	public String getNick() {
+		return nick;
+	}
+	public void setNick(String nick) {
+		this.nick = nick;
+	}
+	
+	public FileDTO getFileDtO() {
+		return fileDtO;
+	}
+	public void setFileDtO(FileDTO fileDtO) {
+		this.fileDtO = fileDtO;
+	}
+	
 	public int getNo() {
 		return no;
 	}
@@ -54,6 +74,9 @@ public class ArticleDTO {
 	}
 	public void setFile(int file) {
 		this.file = file;
+	}
+	public void setFile(String file) {
+		this.file = Integer.parseInt(file);
 	}
 	public int getHit() {
 		return hit;
