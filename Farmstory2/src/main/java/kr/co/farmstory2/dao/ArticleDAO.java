@@ -23,6 +23,7 @@ public class ArticleDAO extends DBHelper{
 			conn = getConnection();
 			conn.setAutoCommit(false); // Transaction 시작
 			
+			stmt = conn.createStatement();
 			psmt = conn.prepareStatement(SQL.INSERT_ARTICLE);
 			psmt.setString(1, dto.getCate());
 			psmt.setString(2, dto.getTitle());
@@ -74,7 +75,7 @@ public class ArticleDAO extends DBHelper{
 				fileDto.setSfile(rs.getString(15));
 				fileDto.setDownload(rs.getInt(16));
 				fileDto.setRdate(rs.getString(17));
-				article.setFileDtO(fileDto);
+				article.setFileDto(fileDto); // article의 FileDto 속성을 fileDto로 설정
 			}
 			close();
 		}catch(Exception e){
@@ -107,6 +108,7 @@ public class ArticleDAO extends DBHelper{
 				article.setWriter(rs.getString(9));
 				article.setRegip(rs.getString(10));
 				article.setRdate(rs.getString(11));
+				article.setNick(rs.getString(12));
 				
 				articles.add(article);
 			}
@@ -118,7 +120,22 @@ public class ArticleDAO extends DBHelper{
 		
 		return articles;
 	}
-	public void updateArticle(ArticleDTO dto) {}
+	
+	public void updateArticle(ArticleDTO dto) {
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.UPDATE_ARTICLE);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getContent());
+			psmt.setInt(3, dto.getNo());
+			psmt.executeUpdate();
+			close();
+			
+		}catch (Exception e) {
+			logger.error("updateArticle() : " + e.getMessage());
+		}
+	}
+	
 	public void deleteArticle(int no) {}
 	
 	// 추가 
@@ -205,20 +222,45 @@ public class ArticleDAO extends DBHelper{
 		return comments;
 	}
 	
-	public void insertComment(ArticleDTO dto) {
+	// 댓글을 등록하고 등록한 해당 댓글을 바로 조회해서 dto 출력
+	public ArticleDTO insertComment(ArticleDTO dto) {
 		
 		try {
 			conn = getConnection();
+			conn.setAutoCommit(false);
+			
+			stmt = conn.createStatement();
 			psmt = conn.prepareStatement(SQL.INSERT_COMMENT);
 			psmt.setInt(1, dto.getParent());
 			psmt.setString(2, dto.getContent());
 			psmt.setString(3, dto.getWriter());
 			psmt.setString(4, dto.getRegip());
 			psmt.executeUpdate();
+			rs = stmt.executeQuery(SQL.SELECT_COMMENT_LATEST);
+			conn.commit();
+			
+			if(rs.next()) {
+				dto.setNo(rs.getInt(1));
+				dto.setParent(rs.getInt(2));
+				dto.setComment(rs.getInt(3));
+				dto.setCate(rs.getString(4));
+				dto.setTitle(rs.getString(5));
+				dto.setContent(rs.getString(6));
+				dto.setFile(rs.getInt(7));
+				dto.setHit(rs.getInt(8));
+				dto.setWriter(rs.getString(9));
+				dto.setRegip(rs.getString(10));
+				dto.setRdateYYMMDD(rs.getString(11));
+				dto.setNick(rs.getString(12));
+			}
 			close();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		logger.debug("dto : " + dto);
+		
+		return dto;  		
 	}
 	
 	public void updateArticleForCommentPlus(String no) {
@@ -245,29 +287,35 @@ public class ArticleDAO extends DBHelper{
 		}
 	}
 
-	public void updateComment(String no, String content) {
+	public int updateComment(String no, String content) {
+		int result = 0;
+		
 		try {
 			conn = getConnection();
 			psmt = conn.prepareStatement(SQL.UPDATE_COMMENT);
 			psmt.setString(1, content);
 			psmt.setString(2, no);
-			psmt.executeUpdate();
+			result = psmt.executeUpdate();
 			close();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		return result;
 	}
 	
-	public void deleteComment(String no) {
+	public int deleteComment(String no) {
+		int result = 0;
+		
 		try {
 			conn = getConnection();
 			psmt = conn.prepareStatement(SQL.DELETE_COMMENT);
 			psmt.setString(1, no);
-			psmt.executeUpdate();
+			result = psmt.executeUpdate();
 			close();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		return result;
 	}
 
 }

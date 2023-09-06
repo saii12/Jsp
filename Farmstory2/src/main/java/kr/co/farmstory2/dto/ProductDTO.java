@@ -27,6 +27,9 @@ public class ProductDTO {
 	public void setType(int type) {
 		this.type = type;
 	}
+	public void setType(String type) {
+		this.type = Integer.parseInt(type);
+	}
 	public String getpName() {
 		return pName;
 	}
@@ -39,17 +42,26 @@ public class ProductDTO {
 	public void setPrice(int price) {
 		this.price = price;
 	}
+	public void setPrice(String price) {
+		this.price = Integer.parseInt(price);
+	}
 	public int getDelivery() {
 		return delivery;
 	}
 	public void setDelivery(int delivery) {
 		this.delivery = delivery;
 	}
+	public void setDelivery(String delivery) {
+		this.delivery = Integer.parseInt(delivery);
+	}
 	public int getStock() {
 		return stock;
 	}
 	public void setStock(int stock) {
 		this.stock = stock;
+	}
+	public void setStock(String stock) {
+		this.stock = Integer.parseInt(stock);
 	}
 	public int getSold() {
 		return sold;

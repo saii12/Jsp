@@ -15,7 +15,8 @@
         </nav>
 
         <article>
-            <form action="#" method="post">
+            <form action="/Farmstory2/admin/productRegister.do" method="post" enctype="multipart/form-data"> <!-- enctype="multipart/form-data"은 multipartRequest랑 연동하기 위해 쓰는것(ProductRegisterController에서 post할때) -->
+            <input type="hidden" name="seller" value="${sessUser.uid}">
                 <table border="0">
                     <tr>
                         <td>상품명</td>

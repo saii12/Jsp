@@ -73,7 +73,7 @@ public class SQL {
 														+ "FROM `Article` AS a "
 														+ "JOIN `User` AS b ON a.writer = b.uid "
 														+ "WHERE `parent`!=0 "
-														+ "ORDER BY `no` DESC LIMIT 1"; 
+														+ "ORDER BY `no` DESC LIMIT 1"; // 방금 insert한 comment를 선택
 	
 	
 	public final static String SELECT_COUNT_TOTAL = "SELECT COUNT(*) FROM `Article` WHERE `parent`=0 AND `cate`=?";

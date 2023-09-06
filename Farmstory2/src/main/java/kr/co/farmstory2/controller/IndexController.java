@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebServlet("/index.do")  // 코드는 치다가 완성못하고 남겨두면 전체가 안된다 => 주석처리할 것
+//시작페이지 index.jsp가 없기 때문에 기본주소("")에 대한 맵핑 추가
+@WebServlet(value = {"", "/index.do"})  // 코드는 치다가 완성못하고 남겨두면 전체페이지가 안된다 => 주석처리할 것
 public class IndexController extends HttpServlet{
 
 	private static final long serialVersionUID = -5141473195026626452L;

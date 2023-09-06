@@ -1,30 +1,13 @@
 package kr.co.farmstory2.dto;
 
 public class FileDTO {
+
 	private int fno;
 	private int ano;
-	private String oriName;
-	private String newName;
-	private int download;
-	private String rdate;
-	
-	// 추가
 	private String ofile;
 	private String sfile;
-	
-	public String getOfile() {
-		return ofile;
-	}
-	public void setOfile(String ofile) {
-		this.ofile = ofile;
-	}
-	
-	public String getSfile() {
-		return sfile;
-	}
-	public void setSfile(String sfile) {
-		this.sfile = sfile;
-	}
+	private int download;
+	private String rdate;
 	
 	public int getFno() {
 		return fno;
@@ -38,17 +21,17 @@ public class FileDTO {
 	public void setAno(int ano) {
 		this.ano = ano;
 	}
-	public String getOriName() {
-		return oriName;
+	public String getOfile() {
+		return ofile;
 	}
-	public void setOriName(String oriName) {
-		this.oriName = oriName;
+	public void setOfile(String ofile) {
+		this.ofile = ofile;
 	}
-	public String getNewName() {
-		return newName;
+	public String getSfile() {
+		return sfile;
 	}
-	public void setNewName(String newName) {
-		this.newName = newName;
+	public void setSfile(String sfile) {
+		this.sfile = sfile;
 	}
 	public int getDownload() {
 		return download;
@@ -63,4 +46,9 @@ public class FileDTO {
 		this.rdate = rdate;
 	}
 	
+	@Override
+	public String toString() {
+		return "FileDTO [fno=" + fno + ", ano=" + ano + ", ofile=" + ofile + ", sfile=" + sfile + ", download="
+				+ download + ", rdate=" + rdate + "]";
+	}
 }

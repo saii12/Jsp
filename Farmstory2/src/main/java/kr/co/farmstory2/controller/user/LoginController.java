@@ -56,7 +56,7 @@ public class LoginController extends HttpServlet{
 			// 리다이렉트
 			resp.sendRedirect("/Farmstory2"); // 리스트가 아니라 홈페이지로 다시 간다
 		}else {
-			resp.sendRedirect("/user/login.do?success=100");
+			resp.sendRedirect("/Farmstory2/user/login.do?success=100"); // /user/login.do 이건 서블릿주소라고!!
 		}
 	}
 }

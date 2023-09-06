@@ -65,7 +65,7 @@
     right: 0;
 }
 </style>
-<jsp:include page="./_aside${group}.jsp"/>
+<jsp:include page="./_aside${group}.jsp"/> <!-- header에서 파라미터로 전송한 데이터를 ListController에서 속성으로 저장하여 표현언어로 참조가능 -->
 			<section class="list">
 			    <h3>글목록</h3>
 			    <article>
@@ -81,7 +81,7 @@
 			            <c:forEach var="article" items="${articles}">                    
 				            <tr>
 				                <td>${pageStartNum = pageStartNum - 1}</td>
-				                <td><a href="./view.do?no=${article.no}">${article.title}[${article.comment}]</a></td>
+				                <td><a href="./view.do?group=${group}&cate=${cate}&no=${article.no}">${article.title}[${article.comment}]</a></td>
 				                <td>${article.nick}</td>
 				                <td>${article.rdate}</td>
 				                <td>${article.hit}</td>

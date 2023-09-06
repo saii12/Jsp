@@ -1,5 +1,6 @@
 package kr.co.farmstory2.dto;
 
+
 public class ArticleDTO {
 	private int no;
 	private int parent;
@@ -13,11 +14,9 @@ public class ArticleDTO {
 	private String regip;
 	private String rdate;
 	
-	
-	
-	// 추가 
+	// 추가필드
 	private String nick;
-	private FileDTO fileDtO;
+	private FileDTO fileDto;
 	
 	public String getNick() {
 		return nick;
@@ -26,11 +25,11 @@ public class ArticleDTO {
 		this.nick = nick;
 	}
 	
-	public FileDTO getFileDtO() {
-		return fileDtO;
+	public FileDTO getFileDto() {
+		return fileDto;
 	}
-	public void setFileDtO(FileDTO fileDtO) {
-		this.fileDtO = fileDtO;
+	public void setFileDto(FileDTO fileDto) {
+		this.fileDto = fileDto;
 	}
 	
 	public int getNo() {
@@ -39,11 +38,17 @@ public class ArticleDTO {
 	public void setNo(int no) {
 		this.no = no;
 	}
+	public void setNo(String no) {
+		this.no = Integer.parseInt(no); // 이거 없어서 글쓰기 오류 났던건데 왜지??? 추가하니까 해결됨
+	}
 	public int getParent() {
 		return parent;
 	}
 	public void setParent(int parent) {
 		this.parent = parent;
+	}
+	public void setParent(String parent) {
+		this.parent = Integer.parseInt(parent);
 	}
 	public int getComment() {
 		return comment;
@@ -75,9 +80,15 @@ public class ArticleDTO {
 	public void setFile(int file) {
 		this.file = file;
 	}
-	public void setFile(String file) {
-		this.file = Integer.parseInt(file);
+	public void setFile(String oName) {
+		
+		if(oName != null) {
+			this.file = 1;	
+		}else {
+			this.file = 0;
+		}
 	}
+	
 	public int getHit() {
 		return hit;
 	}
@@ -97,9 +108,25 @@ public class ArticleDTO {
 		this.regip = regip;
 	}
 	public String getRdate() {
+		return rdate.substring(2, 10);
+	}
+	public String getFullRdate() {
 		return rdate;
 	}
 	public void setRdate(String rdate) {
 		this.rdate = rdate;
 	}
+	
+	public void setRdateYYMMDD(String rdate) {
+		this.rdate = rdate.substring(2, 10);
+	}
+	
+	@Override
+	public String toString() {
+		return "ArticleDTO [no=" + no + ", parent=" + parent + ", comment=" + comment + ", cate=" + cate + ", title="
+				+ title + ", content=" + content + ", file=" + file + ", hit=" + hit + ", writer=" + writer + ", regip="
+				+ regip + ", rdate=" + rdate + ", nick=" + nick + ", fileDto=" + fileDto + "]";
+	}
+	
+	
 }

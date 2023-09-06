@@ -64,9 +64,9 @@ public enum ArticleService {
 		return dao.selectComments(parent);
 	}
 	
-	public void insertComment(ArticleDTO dto) {
+	public ArticleDTO insertComment(ArticleDTO dto) {
 		
-		dao.insertComment(dto);
+		return dao.insertComment(dto);
 	}
 	
 	public void updateArticleForCommentPlus(String no) {
@@ -79,98 +79,94 @@ public enum ArticleService {
 		dao.updateArticleForCommentMinus(no);
 	}
 
-	public void updateComment(String no, String content) {
+	public int updateComment(String no, String content) {
 		
-		dao.updateComment(no, content);
+		return dao.updateComment(no, content);
 	}
 	
-	public void deleteComment(String no) {
+	public int deleteComment(String no) {
 		
-		dao.deleteComment(no);
+		return dao.deleteComment(no);
 	}
 	
 	// 업로드 경로 구하기
-	public String getFilePath(HttpServletRequest req) {
-		// 파일 업로드 경로 구하기 
-		ServletContext ctx = req.getServletContext();
-		String path = ctx.getRealPath("/upload");
-		return path;
-	}
-	
-	// 파일명 수정
-	public String renameToFile(HttpServletRequest req, String oName) {
-		
-		String path = getFilePath(req);
-		
-		int i = oName.lastIndexOf(".");
-		String ext = oName.substring(i);
-		
-		String uuid  = UUID.randomUUID().toString();
-		String sName = uuid + ext;
-		
-		File f1 = new File(path+"/"+oName);
-		File f2 = new File(path+"/"+sName);
-		
-		f1.renameTo(f2);
-		
-		return sName;
-	}
-	
-	
-	// 파일 업로드
-	public MultipartRequest uploadFile(HttpServletRequest req) {
-		// 파일 경로 구하기
-		String path = getFilePath(req);
-		
-		// 최대 업로드 파일 크기
-		int maxSize = 1024 * 1024 * 10;
-		
-		// 파일 업로드 및 Multipart 객체 생성
-		MultipartRequest mr = null;
-		
-		try {
-			mr = new MultipartRequest(req, 
-									  path, 
-									  maxSize, 
-									  "UTF-8", 
-									  new DefaultFileRenamePolicy());
-		} catch (IOException e) {
-			logger.error("uploadFile() : " + e.getMessage());
+		public String getPath(HttpServletRequest req, String dir) {
+			// 파일 업로드 경로 구하기 
+			ServletContext ctx = req.getServletContext();
+			String path = ctx.getRealPath(dir);
+			return path;
 		}
 		
-		return mr;
-	}
-	
-	// 파일 다운로드
-	public void downloadFile(HttpServletRequest req, HttpServletResponse resp, FileDTO dto) throws IOException {
-		// response 파일 다운로드 헤더 수정
-		resp.setContentType("application/octet-stream");
-		resp.setHeader("Content-Disposition", "attachment; filename="+URLEncoder.encode(dto.getOfile(), "utf-8"));
-		resp.setHeader("Content-Transfer-Encoding", "binary");
-		resp.setHeader("Pragma", "no-cache");
-		resp.setHeader("Cache-Control", "private");
-		
-		// response 파일 스트림 작업
-		String path = getFilePath(req);
-		
-		File file = new File(path+"/"+dto.getSfile());
-		
-		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-		BufferedOutputStream bos = new BufferedOutputStream(resp.getOutputStream());
-				
-		while(true){
+		// 파일명 수정
+		public String renameToFile(HttpServletRequest req, String path, String oName) {
 			
-			int data = bis.read();
-			if(data == -1){
-				break;
+			
+			int i = oName.lastIndexOf(".");
+			String ext = oName.substring(i);
+			
+			String uuid  = UUID.randomUUID().toString();
+			String sName = uuid + ext;
+			
+			File f1 = new File(path+"/"+oName);
+			File f2 = new File(path+"/"+sName);
+			
+			f1.renameTo(f2);
+			
+			return sName;
+		}
+		
+		
+		// 파일 업로드
+		public MultipartRequest uploadFile(HttpServletRequest req, String path) {
+			// 최대 업로드 파일 크기
+			int maxSize = 1024 * 1024 * 10;
+			
+			// 파일 업로드 및 Multipart 객체 생성
+			MultipartRequest mr = null;
+			
+			try {
+				mr = new MultipartRequest(req, 
+										  path, 
+										  maxSize, 
+										  "UTF-8", 
+										  new DefaultFileRenamePolicy());
+			} catch (IOException e) {
+				logger.error("uploadFile : " + e.getMessage());
 			}
 			
-			bos.write(data);
+			return mr;
 		}
 		
-		bos.close();
-		bis.close();
-	}
+		// 파일 다운로드
+		public void downloadFile(HttpServletRequest req, HttpServletResponse resp, FileDTO dto) throws IOException {
+			// response 파일 다운로드 헤더 수정
+			resp.setContentType("application/octet-stream");
+			resp.setHeader("Content-Disposition", "attachment; filename="+URLEncoder.encode(dto.getOfile(), "utf-8"));
+			resp.setHeader("Content-Transfer-Encoding", "binary");
+			resp.setHeader("Pragma", "no-cache");
+			resp.setHeader("Cache-Control", "private");
+			
+			// response 파일 스트림 작업
+			String path = getPath(req, "/upload");
+			
+			File file = new File(path+"/"+dto.getSfile());
+			
+			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+			BufferedOutputStream bos = new BufferedOutputStream(resp.getOutputStream());
+					
+			while(true){
+				
+				int data = bis.read();
+				if(data == -1){
+					break;
+				}
+				
+				bos.write(data);
+			}
+			
+			bos.close();
+			bis.close();
+		}
 	
 	// 페이지 마지막 번호
 	public int getLastPageNum(int total) {

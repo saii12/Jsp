@@ -28,7 +28,7 @@ public class ListController extends HttpServlet{
 		
 		String group = req.getParameter("group");
 		String cate = req.getParameter("cate");
-		String pg = req.getParameter("pg");
+		String pg = req.getParameter("pg"); // pg는 어디서 수신하는거지???
 		
 		// 현재 페이지 번호
 		int currentPage = service.getCurrentPage(pg);

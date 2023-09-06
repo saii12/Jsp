@@ -44,7 +44,8 @@ public class WriteController extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		// 파일 업로드
-		MultipartRequest mr = aService.uploadFile(req);
+		String path = aService.getPath(req, "/upload"); //이건 뭔 의미??
+		MultipartRequest mr = aService.uploadFile(req, path);
 		
 		// 폼 데이터 수신
 		String group   = mr.getParameter("group");
@@ -73,7 +74,7 @@ public class WriteController extends HttpServlet{
 		
 		// 파일명 수정 및 파일 Insert
 		if(oName != null) {
-			String sName = aService.renameToFile(req, oName);
+			String sName = aService.renameToFile(req, path, oName);
 			
 			// 파일 Insert
 			FileDTO fileDto = new FileDTO();
