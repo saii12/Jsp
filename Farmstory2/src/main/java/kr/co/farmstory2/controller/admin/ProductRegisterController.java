@@ -36,7 +36,7 @@ public class ProductRegisterController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
-		// 썸네일 업로드
+		// 썸네일 업로드 / 로직 한 번 더 확인하자
 		String path = aService.getPath(req, "/thumb");
 		MultipartRequest mr = aService.uploadFile(req, path);
 		

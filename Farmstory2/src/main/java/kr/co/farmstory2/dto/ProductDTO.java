@@ -1,5 +1,10 @@
 package kr.co.farmstory2.dto;
 
+import java.text.DecimalFormat;
+
+import kr.co.farmstory2.etc.Utils;
+
+
 public class ProductDTO {
 	private int pNo;
 	private int type;
@@ -14,6 +19,16 @@ public class ProductDTO {
 	private String seller;
 	private String etc;
 	private String rdate;
+	
+	// 추가필드
+	private String priceWithComma;
+	
+	public String getPriceWithComma() {
+		return priceWithComma;
+	}
+	public void setPriceWithComma(String priceWithComma) {
+		this.priceWithComma = Utils.comma(priceWithComma);
+	}
 	
 	public int getpNo() {
 		return pNo;

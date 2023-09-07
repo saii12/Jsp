@@ -261,7 +261,7 @@ window.onload = function(){
 			    <section class="commentForm">
 			        <h3>댓글쓰기</h3>
 			        <form id="formComment" action="#" method="post"> <!-- form 전송 안하고 자바스크립트 처리하는 이유 뭐지?? -->
-			        <input type="hidden" name="parent" value="${no}"/> <!-- article의 no임 -->
+			        <input type="hidden" name="parent" value="${no}"/> <!-- ViewController에서 설정한 no속성임 -->
 	            	<input type="hidden" name="writer" value="${sessUser.uid}"/>
 			            <textarea name="content"></textarea>
 			            <div>

@@ -1,5 +1,6 @@
 package kr.co.farmstory2.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -35,13 +36,161 @@ public class ProductDAO extends DBHelper{
 		}
 	}
 	
-	public ProductDTO selectProduct(int pNo) {
-		return null;
+	public ProductDTO selectProduct(String pNo) {
+		ProductDTO dto = null;
+		
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.SELECT_PRODUCT);
+			psmt.setString(1, pNo);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new ProductDTO();
+				dto.setpNo(rs.getInt(1));
+				dto.setType(rs.getInt(2));
+				dto.setpName(rs.getString(3));
+				dto.setPrice(rs.getInt(4));
+				dto.setPriceWithComma(rs.getString(4)); // 3자리 콤마 적용된 가격
+				dto.setDelivery(rs.getInt(5));
+				dto.setStock(rs.getInt(6));
+				dto.setSold(rs.getInt(7));
+				dto.setThumb1(rs.getString(8));
+				dto.setThumb2(rs.getString(9));
+				dto.setThumb3(rs.getString(10));
+				dto.setSeller(rs.getString(11));
+				dto.setEtc(rs.getString(12));
+				dto.setRdate(rs.getString(13));
+			}
+			close();
+		}catch (Exception e) {
+			logger.error("selectProduct() : " + e.getMessage());
+		}
+		return dto;
 	}
-	public List<ProductDTO> selectProducts() {
-		return null;
+	
+	public List<ProductDTO> selectProducts(int start) {
+		List<ProductDTO> products = new ArrayList<ProductDTO>();	
+		
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.SELECT_PRODUCTS_ALL);
+			psmt.setInt(1, start);
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductDTO product = new ProductDTO();
+				product.setpNo(rs.getInt(1));
+				product.setType(rs.getInt(2));
+				product.setpName(rs.getString(3));
+				product.setPrice(rs.getInt(4));
+				product.setDelivery(rs.getInt(5));
+				product.setStock(rs.getInt(6));
+				product.setSold(rs.getInt(7));
+				product.setThumb1(rs.getString(8));
+				product.setThumb2(rs.getString(9));
+				product.setThumb3(rs.getString(10));
+				product.setSeller(rs.getString(11));
+				product.setEtc(rs.getString(12));
+				product.setRdate(rs.getString(13));
+				products.add(product);
+			}
+			close();
+			
+		}catch (Exception e) {
+			logger.error("selectProducts() : " + e.getMessage());
+		}
+		return products;
 	}
+	
+public List<ProductDTO> selectProducts(String type, int start) {
+		
+		List<ProductDTO> products = new ArrayList<>();
+		try {
+			conn = getConnection();
+			
+			if(type.equals("0")) {
+				psmt = conn.prepareStatement(SQL.SELECT_PRODUCTS_ALL);
+				psmt.setInt(1, start);
+			}else {
+				psmt = conn.prepareStatement(SQL.SELECT_PRODUCTS_TYPE);
+				psmt.setString(1, type);
+				psmt.setInt(2, start);
+			}
+			
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				ProductDTO dto = new ProductDTO();
+				dto.setpNo(rs.getInt(1));
+				dto.setType(rs.getInt(2));
+				dto.setpName(rs.getString(3));
+				dto.setPrice(rs.getInt(4));
+				dto.setPriceWithComma(rs.getString(4)); // 3자리 콤마 가공
+				dto.setDelivery(rs.getInt(5));
+				dto.setStock(rs.getInt(6));
+				dto.setSold(rs.getInt(7));
+				dto.setThumb1(rs.getString(8));
+				dto.setThumb2(rs.getString(9));
+				dto.setThumb3(rs.getString(10));
+				dto.setSeller(rs.getString(11));
+				dto.setEtc(rs.getString(12));
+				dto.setRdate(rs.getString(13));
+				products.add(dto);
+			}
+			close();
+		}catch (Exception e) {
+			logger.error("selectProducts - " + e.getMessage());
+		}
+		return products;
+	}
+
 	public void updateProduct(ProductDTO dto) {}
 	public void deleteProduct(int pNo) {}
+	
+	// 추가
+	public int selectCountProductsTotal() {
+		int total = 0;
+		
+		try {
+			conn = getConnection();
+			psmt = conn.prepareStatement(SQL.SELECT_COUNT_PRODUCTS_ALL);
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				total = rs.getInt(1);
+			}
+			close();
+			
+		}catch (Exception e) {
+			logger.error("selectCountProductsTotal - " + e.getMessage());
+		}
+		return total;
+	}
+	
+	public int selectCountProductsTotal(String type) {
+		int total = 0;
+		
+		try {
+			conn = getConnection();
+			if(type.equals("0")) {
+				psmt = conn.prepareStatement(SQL.SELECT_COUNT_PRODUCTS_ALL);
+			}else {
+				psmt = conn.prepareStatement(SQL.SELECT_COUNT_PRODUCTS_TYPE);
+				psmt.setString(1, type);
+			}
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				total = rs.getInt(1);
+			}
+			close();
+			
+		}catch (Exception e) {
+			logger.error("selectCountProductsTotal - " + e.getMessage());
+		}
+		
+		return total;
+	}
 	
 }

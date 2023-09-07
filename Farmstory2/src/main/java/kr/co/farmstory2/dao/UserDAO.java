@@ -55,12 +55,13 @@ public class UserDAO extends DBHelper {
 				dto.setNick(rs.getString(4));
 				dto.setEmail(rs.getString(5));
 				dto.setHp(rs.getString(6));
-				dto.setZip(rs.getString(7));
-				dto.setAddr1(rs.getString(8));
-				dto.setAddr2(rs.getString(9));
-				dto.setRegip(rs.getString(10));
-				dto.setRegDate(rs.getString(11));
-				dto.setLeaveDate(rs.getString(12));
+				dto.setRole(rs.getString(7)); //SQL 실행 모든 칼럼 속성으로 지정해줘야지, 이 줄 빠트려서 Zip 속성에 7번 칼럼 잘못 지정함
+				dto.setZip(rs.getString(8));
+				dto.setAddr1(rs.getString(9));
+				dto.setAddr2(rs.getString(10));
+				dto.setRegip(rs.getString(11));
+				dto.setRegDate(rs.getString(12));
+				dto.setLeaveDate(rs.getString(13));
 			}
 			close();
 			

@@ -74,7 +74,7 @@ public class WriteController extends HttpServlet{
 		
 		// 파일명 수정 및 파일 Insert
 		if(oName != null) {
-			String sName = aService.renameToFile(req, path, oName);
+			String sName = aService.renameToFile(req, path, oName); //이건 뭔 의미??
 			
 			// 파일 Insert
 			FileDTO fileDto = new FileDTO();
