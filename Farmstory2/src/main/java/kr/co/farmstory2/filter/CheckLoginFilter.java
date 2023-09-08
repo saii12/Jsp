@@ -32,7 +32,7 @@ public class CheckLoginFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		// 로그인 여부 확인
 		logger.debug("doFilter...");
-		
+		logger.info("infoTest");
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpSession session = httpRequest.getSession();
 		

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <!--  이거 하나 빠뜨려서 orderList.jsp에서 몇시간을 날렸다 !!! -->
 <!DOCTYPE html>
 <html lang="en">
 <head>

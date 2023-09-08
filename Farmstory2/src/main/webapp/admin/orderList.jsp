@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="./_header.jsp" %>
+
 <script>
 	$(function(){
 
@@ -29,7 +30,6 @@
         </nav>
 
         <article>
-
             <table border="0">
                 <tr>
                     <th><input type="checkbox" name="all"/></th>
@@ -43,32 +43,35 @@
                     <th>주문일</th>
                     <th>확인</th>
                 </tr>
+                <c:forEach var="order" items="${orders}">
                 <tr>
                     <td><input type="checkbox" name=""/></td>
-                    <td>1001</td>
-                    <td>사과 500g</td>                            
-                    <td>4,000원</td>
-                    <td>2</td>
-                    <td>3,000원</td>
-                    <td>11,000원</td>
-                    <td>김유신</td>
-                    <td>2023-01-01 13:06:14</td>
-                    <td><a href="#" class="showPopup">[상세확인]</a></td>
+                    <td>${order.orderNo}</td>
+                    <td>${order.pName}</td>
+                    <td>${order.orderPrice}</td>
+                    <td>${order.orderCount}</td>
+                    <td>${order.orderDelivery}</td>
+                    <td>${order.orderTotal}</td>
+                    <td>${order.orderUser}</td>
+                    <td>${order.orderDate}</td>
+                    <td><a href="#" class="showPopup" onclick="userData(this)" data-value="${dto}">[상세확인]</a>
                 </tr>
+                </c:forEach>
             </table>
-
             <p>
                 <a href="#" class="orderDelete">선택삭제</a>                        
             </p>
             
             <p class="paging">
-                <a href="#"><</a>
-                <a href="#" class="on">[1]</a>
-                <a href="#">[2]</a>
-                <a href="#">[3]</a>
-                <a href="#">[4]</a>
-                <a href="#">[5]</a>
-                <a href="#">></a>
+            	<c:if test="${pageGroupStart > 1}">
+	            	<a href="/Farmstory2/admin/orderList.do?pg=${pageGroupStart - 1}" class="prev"><</a> <!-- ${ctxpath} 강사님 꺼 복붙해서 안됬었음 -->
+	            </c:if>
+	            <c:forEach var="i" begin="${pageGroupStart}" end="${pageGroupEnd}">
+	            	<a href="/Farmstory2/admin/orderList.do?pg=${i}&" class="num ${currentPage == i?'current':'off'}">[${i}]</a>
+	            </c:forEach>
+	            <c:if test="${pageGroupEnd < lastPageNum}">
+	            	<a href="/Farmstory2/admin/orderList.do?&pg=${pageGroupEnd + 1}" class="next">></a>
+	            </c:if>
             </p>
         </article>
     </section>

@@ -174,7 +174,7 @@ public enum ArticleService {
 		int lastPageNum = 0;
 		
 		if(total % 10 == 0){
-			lastPageNum = total / 10;
+			lastPageNum = total / 10; // total이 10 이하면 lastPageNum은 1이 되고, 10초과 20이하면 2, 20초과 30이하면 3 이렇게 된다
 		}else{
 			lastPageNum = total / 10 + 1;
 		}
@@ -184,7 +184,7 @@ public enum ArticleService {
 	
 	// 페이지 그룹
 	public int[] getPageGroupNum(int currentPage, int lastPageNum) {
-		int currentPageGroup = (int)Math.ceil(currentPage / 10.0);
+		int currentPageGroup = (int)Math.ceil(currentPage / 10.0); // /currentPage10이면 10 / 10.0 = 1이고 소수점이하 올림해도 1이다. currentPage 1~10이면 페이지그룹1, 11~20이면 그룹2 ...
 		int pageGroupStart = (currentPageGroup - 1) * 10 + 1;
 		int pageGroupEnd = currentPageGroup * 10;
 		

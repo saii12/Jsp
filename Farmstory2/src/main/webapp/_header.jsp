@@ -28,7 +28,7 @@
 <body>
     <div id="container">
         <header>
-            <a href="/Farmstory2" class="logo"><img src="/Farmstory2/images/logo.png" alt="로고"/></a>
+            <a href="/Farmstory2" class="logo"><img src="/Farmstory2/images/logo.png" alt="로고"/></a> <!-- /Farmstory2 이렇게 주소도 가능하구나 -->
             <p>
                 <a href="/Farmstory2/index.do">HOME |</a>
                 <c:if test="${empty sessUser}">

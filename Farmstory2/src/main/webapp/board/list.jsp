@@ -81,7 +81,7 @@
 			            <c:forEach var="article" items="${articles}">                    
 				            <tr>
 				                <td>${pageStartNum = pageStartNum - 1}</td>
-				                <td><a href="./view.do?group=${group}&cate=${cate}&no=${article.no}">${article.title}[${article.comment}]</a></td>
+				                <td><a href="/Farmstory2/board/view.do?group=${group}&cate=${cate}&no=${article.no}">${article.title}[${article.comment}]</a></td>
 				                <td>${article.nick}</td>
 				                <td>${article.rdate}</td>
 				                <td>${article.hit}</td>
@@ -104,7 +104,7 @@
 		        </div>
 			
 			    <!-- 글쓰기 버튼 -->
-			    <a href="./write.do?group=${group}&cate=${cate}" class="btnWrite">글쓰기</a>
+			    <a href="/Farmstory2/write.do?group=${group}&cate=${cate}" class="btnWrite">글쓰기</a>
 			</section>
 			<!-- 내용 끝 -->
 

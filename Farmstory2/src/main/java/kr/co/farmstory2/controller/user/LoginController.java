@@ -47,11 +47,14 @@ public class LoginController extends HttpServlet{
 		UserDTO user = service.selectUser(uid, pass);
 		
 		if(user != null) {
+			
 			// 현재 세션 구하기
 			HttpSession session = req.getSession();
 			
 			// 사용자 세션 설정
 			session.setAttribute("sessUser", user);
+			
+			logger.info(user.toString()); //로그인하면 logback.xml에서 설정한 home/tomcat/logs에 log파일 생기고 info 입력이 된다.
 			
 			// 리다이렉트
 			resp.sendRedirect("/Farmstory2"); // 리스트가 아니라 홈페이지로 다시 간다

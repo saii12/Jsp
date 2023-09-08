@@ -1,6 +1,7 @@
 package kr.co.farmstory2.dto;
 
 public class OrderDTO {
+	
 	private int orderNo;
 	private int orderProduct;
 	private int orderCount;
@@ -15,6 +16,24 @@ public class OrderDTO {
 	private String orderEtc;
 	private String orderUser;
 	private String orderDate;
+	
+	// 추가필드
+	private String pName;
+	private String thumb1;
+	
+	public String getpName() {
+		return pName;
+	}
+	public void setpName(String pName) {
+		this.pName = pName;
+	}
+	
+	public String getThumb1() {
+		return thumb1;
+	}
+	public void setThumb1(String thumb1) {
+		this.thumb1 = thumb1;
+	}
 	
 	public int getOrderNo() {
 		return orderNo;
@@ -115,4 +134,14 @@ public class OrderDTO {
 	public void setOrderDate(String orderDate) {
 		this.orderDate = orderDate;
 	}
+	@Override
+	public String toString() {
+		return "OrderDTO [orderNo=" + orderNo + ", orderProduct=" + orderProduct + ", orderCount=" + orderCount
+				+ ", orderDelivery=" + orderDelivery + ", orderPrice=" + orderPrice + ", orderTotal=" + orderTotal
+				+ ", receiver=" + receiver + ", hp=" + hp + ", zip=" + zip + ", addr1=" + addr1 + ", addr2=" + addr2
+				+ ", orderEtc=" + orderEtc + ", orderUser=" + orderUser + ", orderDate=" + orderDate + ", pName="
+				+ pName + ", thumb1=" + thumb1 + "]";
+	}
+	
+	
 }

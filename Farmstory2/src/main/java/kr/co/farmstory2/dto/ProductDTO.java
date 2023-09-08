@@ -120,4 +120,13 @@ public class ProductDTO {
 	public void setRdate(String rdate) {
 		this.rdate = rdate;
 	}
+	@Override
+	public String toString() {
+		return "ProductDTO [pNo=" + pNo + ", type=" + type + ", pName=" + pName + ", price=" + price + ", delivery="
+				+ delivery + ", stock=" + stock + ", sold=" + sold + ", thumb1=" + thumb1 + ", thumb2=" + thumb2
+				+ ", thumb3=" + thumb3 + ", seller=" + seller + ", etc=" + etc + ", rdate=" + rdate
+				+ ", priceWithComma=" + priceWithComma + "]";
+	}
+	
+	
 }
