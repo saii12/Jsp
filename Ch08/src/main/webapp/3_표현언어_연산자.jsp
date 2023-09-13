@@ -40,8 +40,8 @@
 			num1 == num2 = ${num1 == num2}<br>
 			num1 != num2 = ${num1 != num2}<br><br>
 			
-			num1 gt num2 = ${num1 gt num2}<br>
-			num1 lt num2 = ${num1 lt num2}<br>
+			num1 gt num2 = ${num1 gt num2}<br> <!-- greater than -->
+			num1 lt num2 = ${num1 lt num2}<br> <!-- less than -->
 			num1 ge num2 = ${num1 ge num2}<br> <!-- greater equal -->
 			num1 le num2 = ${num1 le num2}<br> <!-- less equal -->
 			num1 eq num2 = ${num1 eq num2}<br>
