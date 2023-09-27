@@ -20,15 +20,18 @@ import kr.co.jboard2.dto.UserDTO;
 
 public class UserService {
 	private static UserService instance = new UserService();
-	public static UserService getInstance() {
+	
+	// 싱글톤
+	public static UserService getInstance() { 
 		return instance;
 	}
 	private UserService() {}
 	
-	private static String generatedCode;
+	
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 	private UserDAO dao = UserDAO.getInstance();
+	private static String generatedCode; // 인증코드 생성시 필요
 
 	public void insertUser(UserDTO dto) {
 		dao.insertUser(dto);
