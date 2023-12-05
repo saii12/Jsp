@@ -41,7 +41,7 @@
                         </div>
                         <div>
                             <input type="text" name="auth" placeholder="인증번호 입력"/>
-                            <button type="button" id="btnEmailAuth" class="btnConfirm">확인</button> <!-- type="button" submit으로 수정 -->
+                            <button type="button" id="btnEmailAuth" class="btnConfirm">확인</button> 
                         </div>
                     </td>
                 </tr>                        
